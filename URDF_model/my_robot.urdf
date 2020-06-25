@@ -1,0 +1,57 @@
+<robot name="test_robot">
+    <link name = "jetson"/>
+    <link name = "powerboard"/>
+    <link name = "motorcontroller"/>
+    <link name = "imu"/>
+    <link name = "hydrophone"/>
+    <link name = "lcdboard"/>
+    <link name = "dvl"/>
+    <link name = "grabber"/>
+    <link name = "torpedo"/>
+    <link name = "balldropper"/>
+
+    <joint name="power" type="continuous">
+        <parent link="jetson"/>
+        <child link="powerboard"/>
+    </joint>
+
+    <joint name="motors" type="continuous">
+        <parent link="jetson"/>
+        <child link="motorcontroller"/>
+    </joint>
+
+    <joint name="inertia" type="continuous">
+        <parent link="jetson"/>
+        <child link="imu"/>
+    </joint>
+
+    <joint name="acoustics" type="continuous">
+        <parent link="jetson"/>
+        <child link="hydrophone"/>
+    </joint>
+
+    <joint name="debug" type="continuous">
+        <parent link="jetson"/>
+        <child link="lcdboard"/>
+    </joint>
+    
+    <joint name="tracker" type="continuous">
+        <parent link="jetson"/>
+        <child link="dvl"/>
+    </joint>
+    
+    <joint name="limb" type="continuous">
+        <parent link="jetson"/>
+        <child link="grabber"/>
+    </joint>
+        
+    <joint name="LRweapon" type="continuous">
+        <parent link="jetson"/>
+        <child link="torpedo"/>
+    </joint>
+    
+    <joint name="SRweapon" type="continuous">
+        <parent link="jetson"/>
+        <child link="balldropper"/>
+    </joint>
+</robot>

@@ -1,0 +1,32 @@
+digraph G {
+node [shape=box];
+"jetson" [label="jetson"];
+"torpedo" [label="torpedo"];
+"balldropper" [label="balldropper"];
+"hydrophone" [label="hydrophone"];
+"lcdboard" [label="lcdboard"];
+"imu" [label="imu"];
+"grabber" [label="grabber"];
+"motorcontroller" [label="motorcontroller"];
+"powerboard" [label="powerboard"];
+"dvl" [label="dvl"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"jetson" -> "LRweapon" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"LRweapon" -> "torpedo"
+"jetson" -> "SRweapon" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"SRweapon" -> "balldropper"
+"jetson" -> "acoustics" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"acoustics" -> "hydrophone"
+"jetson" -> "debug" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"debug" -> "lcdboard"
+"jetson" -> "inertia" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"inertia" -> "imu"
+"jetson" -> "limb" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"limb" -> "grabber"
+"jetson" -> "motors" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"motors" -> "motorcontroller"
+"jetson" -> "power" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"power" -> "powerboard"
+"jetson" -> "tracker" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"tracker" -> "dvl"
+}

@@ -1,0 +1,12 @@
+<!-- 
+This launch script for whatever reason, needs to be run twice to work. The error probably lies in the monitor 
+package. To fix this issue, Try and to relaunch the launch file twice. -->
+<launch>
+<!-- link layer stuff -->
+  <include file="$(find monitor)/launch/can.launch"/>
+  <node name="socketcan_bridge_node" pkg="socketcan_bridge" type="socketcan_bridge_node" output="screen" required="true">
+    <param name="can_device" value="vcan0"/>
+  </node>
+<!-- network layer stuff (and soon to be transport stuff) -->
+    <include file="$(find devices)/launch/periph.launch"/>
+</launch>

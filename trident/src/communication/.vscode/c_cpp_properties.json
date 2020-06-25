@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/sailor/software/trident/devel/include/**",
+                "/opt/ros/noetic/include/**",
+                "/home/sailor/software/trident/src/communication/devices/include/**",
+                "/home/sailor/software/trident/src/communication/socketcan_bridge/include/**",
+                "/home/sailor/software/trident/src/communication/socketcan_interface/include/**",
+                "/usr/include/**"
+            ],
+            "name": "ROS",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "gnu++14"
+        }
+    ],
+    "version": 4
+}

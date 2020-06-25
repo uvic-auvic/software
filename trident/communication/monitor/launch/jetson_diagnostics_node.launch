@@ -1,0 +1,5 @@
+<launch>
+    <node name="jetson_diagnostics_node" pkg="monitor" type="jetson_diagnostics_node">
+    </node>
+</launch>
+
