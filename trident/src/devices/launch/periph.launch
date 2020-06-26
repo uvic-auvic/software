@@ -1,5 +1,21 @@
 <launch>
     <node name="powerboard_node" pkg="devices" type="powerboard_node" required="true">
     </node>
+    <node name="lcd_board_node" pkg="devices" type="lcd_board_node" required="true">
+    </node>
+    <node name="motorcontroller_node" pkg="devices" type="motorcontroller_node" required="true">
+    </node>
+    <node name="hydrophone_node" pkg="devices" type="hydrophone_node" required="true">
+    </node>
+    <node name="dvl_node" pkg="devices" type="dvl_node" required="true">
+    </node>
+    <node name="grabber_node" pkg="devices" type="grabber_node" required="true">
+    </node>
+    <node name="torpedo_node" pkg="devices" type="torpedo_node" required="true">
+    </node>
+    <node name="imu_node" pkg="devices" type="imu_node" required="true">
+    </node>
+    <node name="dropper_node" pkg="devices" type="dropper_node" required="true">
+    </node>    
 </launch>
 

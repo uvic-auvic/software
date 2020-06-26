@@ -1,3 +1,4 @@
+// NOTE: if you get red line sunder the types, you need to locate them by following the include path
 #ifndef DEVICE_MANAGER_HPP
 #define DEVICE_MANAGER_HPP
 
@@ -12,7 +13,9 @@
 #include <boost/property_tree/json_parser.hpp>
 
 // ROS kernal
-#include <ros/ros.h>
+#include <ros/publisher.h>
+#include <ros/service.h>
+#include <ros/subscriber.h>
 #include <ros/console.h>
 #include "can_msgs/Frame.h"
 
@@ -75,7 +78,8 @@ class Can_Manager{
     public:
         Can_Manager(
             const std::vector<Device_Property> & properties,
-            ros::NodeHandle* n_auvic
+            ros::NodeHandle* n_auvic,
+            ros::NodeHandle* n_socketcan
         );
         void setup(ros::NodeHandle* n_auvic);
         // void setup(const std::vector<Device_Property> & properties);
@@ -85,7 +89,6 @@ class Can_Manager{
         void THECALLfromTheBUS(const can_msgs::Frame::ConstPtr& msg);
         bool toCan(GetCanMsgReq& req, GetCanMsgRes& res);
     private:
-
         ros::Publisher send_;
         ros::ServiceServer node_server_;
         ros::Subscriber receive_;
