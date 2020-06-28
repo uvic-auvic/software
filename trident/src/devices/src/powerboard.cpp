@@ -4,7 +4,7 @@
 // @param1 nodehandle to speak with auvic topics
 Powerboard::Powerboard(ros::NodeHandle* n_auvic){
         this->sub = n_auvic->subscribe<can_msgs::Frame>("power", 10, &Powerboard::topic_callback, this);
-        this->client = n_auvic->serviceClient<monitor::GetCanMSG>("toCAN");
+        this->client = n_auvic->serviceClient<monitor::GetDeviceMessage>("toCAN");
 }
 
 Powerboard::~Powerboard(){};
@@ -12,7 +12,7 @@ Powerboard::~Powerboard(){};
 // TODO: what to do when reading from the topic
 // Instead of polling, maybe use a timer and interrupt it. see ROS timers for details
 void Powerboard::topic_callback(const can_msgs::Frame::ConstPtr& msg) {
-    ROS_INFO_ONCE("message received");
+    ROS_INFO_ONCE("Powerboard: message received");
 }
 
 // this method gets called when sending a mesage onto can bus.

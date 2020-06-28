@@ -1,0 +1,11 @@
+<launch>
+  <node name="controlsystem"
+        pkg="controlsystem"
+        type="controlsystem_node"
+        required="true"
+        output="screen"
+  >
+        <!-- launch-prefix="xterm -e gdb -args" -->
+    <rosparam command="load" file="$(find controlsystem)/config/test.yaml"/>
+  </node>
+</launch>

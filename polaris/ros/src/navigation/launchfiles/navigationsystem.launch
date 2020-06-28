@@ -1,0 +1,61 @@
+<launch>
+  <!-- General Navigation System Parameters -->
+  <arg name="loop_rate" default="10.0"/>
+  <arg name="loops_per_param_update" default="10"/>
+  <arg name="depth_filter_size" default="5"/>
+  <arg name="min_linear_vel" default="-5.0"/>
+  <arg name="max_linear_vel" default="5.0"/>
+  <arg name="min_angular_vel" default="-180.0"/>
+  <arg name="max_angular_vel" default="180.0"/>
+  <arg name="min_angular_pos" default="-90"/>
+  <arg name="max_angular_pos" default="90"/>
+
+  <!-- Velocity Z Control System (Depth/Up/Down) -->
+  <arg name="Kp_vel_z" default="0.35"/>
+  <arg name="Ki_vel_z" default="0.009"/>
+
+  <!-- Position Pitch Control System -->
+  <arg name="Kp_pos_p" default="15"/>
+  <arg name="Ki_pos_p" default="15"/>
+  <arg name="Kp_vel_p" default="0.05"/>
+  <arg name="Ki_vel_p" default="0.005"/>
+
+  <!-- Position Roll Control System -->
+  <arg name="Kp_pos_r" default="15"/>
+  <arg name="Ki_pos_r" default="15"/>
+  <arg name="Kp_vel_r" default="0.055555"/>
+  <arg name="Ki_vel_r" default="0.0002"/>
+
+  <!-- Velocity Yaw Control System -->
+  <arg name="Kp_vel_yw" default="0.85"/>
+  <arg name="Ki_vel_yw" default="0.038"/>
+
+  <node name="navigationsystem"
+        pkg="navigation"
+        type="navigationsystem_node"
+        required="true"
+        output="screen">
+
+    <!-- Pass in parameters for execution. -->
+    <param name="loop_rate" value="$(arg loop_rate)"/>
+    <param name="loops_per_param_update" value="$(arg loops_per_param_update)"/>
+    <param name="min_linear_vel" value="$(arg min_linear_vel)"/>
+    <param name="max_linear_vel" value="$(arg max_linear_vel)"/>
+    <param name="min_angular_vel" value="$(arg min_angular_vel)"/>
+    <param name="max_angular_vel" value="$(arg max_angular_vel)"/>
+    <param name="min_angular_pos" value="$(arg min_angular_pos)"/>
+    <param name="max_angular_pos" value="$(arg max_angular_pos)"/>
+    <param name="Kp_vel_z" value="$(arg Kp_vel_z)"/>
+    <param name="Ki_vel_z" value="$(arg Ki_vel_z)"/>
+    <param name="Kp_pos_p" value="$(arg Kp_pos_p)"/>
+    <param name="Ki_pos_p" value="$(arg Ki_pos_p)"/>
+    <param name="Kp_vel_p" value="$(arg Kp_vel_p)"/>
+    <param name="Ki_vel_p" value="$(arg Ki_vel_p)"/>
+    <param name="Kp_pos_r" value="$(arg Kp_pos_r)"/>
+    <param name="Ki_pos_r" value="$(arg Ki_pos_r)"/>
+    <param name="Kp_vel_r" value="$(arg Kp_vel_r)"/>
+    <param name="Ki_vel_r" value="$(arg Ki_vel_r)"/>
+    <param name="Kp_vel_yw" value="$(arg Kp_vel_yw)"/>
+    <param name="Ki_vel_yw" value="$(arg Ki_vel_yw)"/>
+  </node>
+</launch>

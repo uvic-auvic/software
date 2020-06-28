@@ -1,6 +1,7 @@
 #ifndef PERIPHERAL_MANAGER_HPP
 #define PERIPHERAL_MANAGER_HPP
 //C++ library
+#include <memory>
 
 // ROS kernal
 #include <ros/ros.h>
@@ -8,7 +9,19 @@
 #include "can_msgs/Frame.h"
 
 //auvic library
-#include "monitor/GetCanMSG.h"
+#include "monitor/GetDeviceMessage.h"
+#include "devices/rpms.h"
+#include "devices/powerboard.h"
+#include "devices/polar_num.h"
+#include "devices/orientation.h"
+#include "devices/motor_enums.h"
+#include "devices/imu.h"
+#include "devices/hydro_fft.h"
+#include "devices/hydro.h"
+#include "devices/depth.h"
+
+#include "devices/avg_data.h"
+#include "devices/power_enable.h"
 
 class Peripherals{
     public:
@@ -19,8 +32,8 @@ class Peripherals{
         bool send_frame(const can_msgs::Frame::ConstPtr& data);
     
         // peripheral is turned off by default
-        bool ignore = 1;
-        monitor::GetCanMSG srv;
+        bool ignore = true;
+        monitor::GetDeviceMessage srv;
         can_msgs::Frame msg;
         uint8_t data[8];
         ros::Subscriber sub;
@@ -29,6 +42,12 @@ class Peripherals{
 
 class Powerboard: public Peripherals{
     public:
+        // using powerboardInfo = devices::powerboard;
+        // using powerEnableReq = devices::power_enable::Request;
+        // using powerEnableRes = devices::power_enable::Response;
+        // using AvgDataReq = devices::avg_data::Request;
+        // using AvgDataRes = devices::avg_data::Response;
+
         Powerboard(ros::NodeHandle* n_auvic);
         ~Powerboard();
         void topic_callback(const can_msgs::Frame::ConstPtr& msg);
@@ -39,10 +58,9 @@ class Powerboard: public Peripherals{
         // TODO: average_ext_pressure: see polaris for implementation
         bool average_ext_pressure();
 
-        // protocol_deviceName_S    PB_deviceName; // Sent by Power Board, Received by Polaris
-        // protocol_PBEnvData_S     PB_envData; // Sent by Power Board, Received by Polaris
-        // protocol_PBBattVoltages_S PB_battVoltages; // Sent by Power Board, Received by Polaris
-        // protocol_PBBattCurrents_S PB_battCurrents; // Sent by Power Board, Received by Polaris
+    private:
+        std::string PB_deviceName, PB_envData, PB_battVoltages, PB_battCurrents;
+        
 };
 
 class Motorcontroller: public Peripherals{

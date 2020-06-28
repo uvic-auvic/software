@@ -1,5 +1,0 @@
-<launch>
-    <node name="powerboard_node" pkg="peripheral" type="powerboard_node" required="true">
-    </node>
-</launch>
-

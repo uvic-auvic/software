@@ -4,31 +4,16 @@
 #include "can_manager.hpp"
 
 
-
-// TODO: returns a lists of all devices connected to the CAN bus.
-// //       do this by requesting a 'heartbeat; (all devices ping) 
-// bool Can_Manager::get_all_devices(GetAllReq &, GetAllRes &){
-//     return true;
-// }
-
-// TODO: checks if a device is connected to the CAN bus
-// bool Can_Manager::get_a_device(GetAReq &, GetARes &){
-//     return true;
-// }
-
-// @param1 vector of devices from yaml
-// @param2 nodehandle to speak with auvic topics
-// @param3 nodehandle reserved for socketcan topics
-Can_Manager::Can_Manager(const std::vector<Device_Property> & properties, ros::NodeHandle* n_auvic, ros::NodeHandle* n_socketcan){
-        // Device list
-        this->JSON_Device_List = properties;
+// @param1 nodehandle to speak with auvic topics
+// @param2 nodehandle reserved for socketcan topics
+Can_Manager::Can_Manager(ros::NodeHandle* n_auvic, ros::NodeHandle* n_socketcan){
 
         // Socket topics
         this->send_ = n_socketcan->advertise<can_msgs::Frame>("sent_messages", 10);
-        this->receive_ = n_socketcan->subscribe<can_msgs::Frame>("received_messages", 10, &Can_Manager::THECALLfromTheBUS, this);
+        this->receive_ = n_socketcan->subscribe<can_msgs::Frame>("received_messages", 10, &Can_Manager::From_Can, this);
         
         // Services
-        this->node_server_ = n_auvic->advertiseService("toCan", &Can_Manager::toCan, this);
+        this->node_server_ = n_auvic->advertiseService("toCAN", &Can_Manager::To_Can, this);
 
         // Peripheral topics
         this->Peripheral_torpedo = n_auvic->advertise<can_msgs::Frame>("LRweapon", 10);
@@ -39,15 +24,13 @@ Can_Manager::Can_Manager(const std::vector<Device_Property> & properties, ros::N
         this->Peripheral_imu = n_auvic->advertise<can_msgs::Frame>("inertia", 10);
         this->Peripheral_grabber = n_auvic->advertise<can_msgs::Frame>("limb", 10); 
         this->Peripheral_dropper = n_auvic->advertise<can_msgs::Frame>("SRweapon", 10);
-        this->Peripheral_hydrophone = n_auvic->advertise<can_msgs::Frame>("acoustics", 10);
-
-        
+        this->Peripheral_hydrophone = n_auvic->advertise<can_msgs::Frame>("acoustics", 10);   
 }
 
 
 // handles messages received from the can bus
 // @param: msg: a ptr to the message received from the can bus. 
-void Can_Manager::THECALLfromTheBUS(const can_msgs::Frame::ConstPtr& msg){
+void Can_Manager::From_Can(const can_msgs::Frame::ConstPtr& msg){
     ROS_INFO_ONCE("The frame id is: [%d]", msg->id);
     
     // lookup topic from id list and send message
@@ -160,16 +143,31 @@ void Can_Manager::THECALLfromTheBUS(const can_msgs::Frame::ConstPtr& msg){
 }  
 
 //  publishes message to socketCAN
-bool Can_Manager::toCan(GetCanMsgReq& req, GetCanMsgRes& res){
-    ROS_INFO_ONCE("publishing to 'sent_messages' topic from");// )%s");//, req.node_name);
+bool Can_Manager::To_Can(GetDeviceMessageReq& req, GetDeviceMessageRes& res){
+    ROS_INFO_ONCE("Sending msg from [%s] to [socketcan_bridge].\n", req.node_name.c_str());
     this->send_.publish(req.msg);
-    ROS_INFO_ONCE("Published message.");
+    ROS_INFO_ONCE("Published message.\n");
     res.ack = "sent.";
     return true;
 }
 
-// TODO: check if devices are connected using the JSON file
-void Can_Manager::setup(ros::NodeHandle* n_auvic){
+// TODO: Assemble can_msg for socketcan_bridge
+can_msgs::Frame Can_Manager::Make_Can_msg(){
+    can_msgs::Frame msg;
+    return msg;
+}
 
+// TODO: check which devices are connected to the CAN bus
+void Can_Manager::Startup_routine(ros::NodeHandle* n_auvic){
+
+}
+
+// TODO: Check a single device status on the CAN bus
+void Can_Manager::Check_device_status(std::string device_name){
+
+}
+
+// TODO: Check all devices on the CAN bus
+void Can_Manager::Check_all_devices_status(){
 
 }

@@ -1,0 +1,40 @@
+{
+  "CONFIG":  {
+    "PID_COEFFS": [1, 1, 0] // ...
+  },
+
+  "STATES": {
+    "DIVE": {
+      "desired_sources": [
+        "/nav/depth"
+      ],
+      "feedback_sources": [
+        "/system/depth"
+      ]
+    },
+    "GATE": {
+      "desired_sources": [
+        "/vision/heading"
+      ],
+      "feedback_sources": [
+        "/system/heading"
+      ]
+    },
+    "GRAB_A": {
+    },
+    "PATH": {
+    },
+    "BUOY": {
+    },
+    "DROP_A": {
+    },
+    "TORPEDOS": {
+    },
+    "GRAB_B": {
+    },
+    "DROP_B": {
+    },
+    "EXIT_SUCCESS": {
+    }
+  }
+}

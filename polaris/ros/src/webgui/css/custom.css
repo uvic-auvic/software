@@ -1,0 +1,76 @@
+img{
+    max-width:100%;
+}
+
+#ros_out_node p {
+    margin: 0px;
+}
+
+#main-video-selector{
+    min-width: 100%;
+}
+
+#main-video-stream{
+    min-width: 100%;
+}
+
+.ros_topic_title{
+    font-weight: bold;
+    font-size: medium;
+}
+
+.IMU_Data p{
+    margin:0px;
+}
+.table-hover tbody tr:hover td{
+    background-color:#242323;
+  }
+
+.navbar.navbar-default{
+    background: #1069ceb2;
+    padding: 20px 0 20px 0;
+
+}
+a{ 
+    float: left;
+    display: inline;
+    padding: 0 20px 0 20px;
+    border: #353434;
+    color: white;
+    text-decoration: none;
+    font-size: 25px;
+}
+a:hover{
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+}
+.col-lg-8{
+    width: 65%;
+    padding-top: 10px;
+
+}
+
+.col-lg-2{
+    border: #ffffff 2px solid;
+    border-radius: 6px;
+    margin: 5px;
+}
+body{
+    background: #353434;
+    color: #ffffff;
+}
+th {
+    font-weight: bold;
+}
+button{
+    background: #535353;
+    color: #ffffff;
+    border-radius: 8px;
+    margin: 5       px;    
+}
+select{
+    background: #535353;
+    color: #ffffff;
+    border-radius: 8px;
+}

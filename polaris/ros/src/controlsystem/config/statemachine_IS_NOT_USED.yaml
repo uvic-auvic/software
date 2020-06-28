@@ -1,0 +1,42 @@
+states:
+  dive:
+    procedure: DiveProcedure
+    error: done
+    next: gate/locate
+  surface:
+    procedure: SurfaceProcedure
+    error: done
+    next: done
+  gate:
+    locate:
+      procedure: GateLocateProcedure
+      error: gate/locate
+      next: gate/traverse
+    traverse:
+      procedure: GateTraversalProcedure
+      params:
+        toadd: TRUE
+      error: gate/locate
+      next: buoy/locate
+  buoy:
+    locate:
+      procedure: BuoyLocateProcedure
+      error: buoy/locate # idk if this is the right thing to do.
+      next: buoy/traverse
+    traverse:
+      procedure: BuoyTraverseProcedure
+      error: buoy/locate
+      next: buoy/bump/orient_side
+    bump:
+      orient_side:
+        procedure: BuoyOrientSideProcedure
+        params:
+          toadd: TRUE
+        error: buoy/locate
+        next: buoy/attack
+      attack:
+        procedure: BuoyAttackProcedure
+        params:
+          toadd: TRUE
+        error: buoy/bump/orient_side
+        next: buoy/bump/attack

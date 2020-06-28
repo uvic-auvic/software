@@ -1,9 +1,5 @@
 <launch>
-    <arg name="location" default="$(find monitor)/config/devices.json"/>
     <node name="can_manager_node" pkg="monitor" type="can_manager_node" required="true">
-        <param name="devices_json_location"  value="$(arg location)"/>
     </node>
-    <!-- <node name="powerboard_node" pkg="monitor" type="powerboard_node" required="true">
-    </node> -->
 </launch>
 

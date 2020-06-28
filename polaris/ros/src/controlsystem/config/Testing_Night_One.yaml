@@ -1,0 +1,14 @@
+#go to launchfile/tests/controlsystem_idle_test and modify what yaml file there
+states:
+  dive:
+    procedure: DiveProcedure
+    error: DiveProcedure
+    next: idle
+  idle:
+    procedure: IdleProcedure
+    error: idle
+    next: idle
+  surface:
+    procedure: SurfaceProcedure
+    error: surface
+    next: surface

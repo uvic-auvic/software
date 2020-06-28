@@ -1,0 +1,13 @@
+states:
+  dive:
+    procedure: DiveProcedure
+    error: DiveProcedure
+    next: idle
+  idle:
+    procedure: IdleProcedure
+    error: idle
+    next: idle
+  surface:
+    procedure: SurfaceProcedure
+    error: surface
+    next: surface

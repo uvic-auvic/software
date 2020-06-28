@@ -14,7 +14,20 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
 )
 
-add_message_files(
+add_service_files(DIRECTORY srv
+  FILES
+  motor.srv
+  motors.srv
+  power_enable.srv
+  avg_data.srv
+  hydro_data.srv
+  set_vel.srv
+  hydro_ffts.srv
+  hydro_phases.srv
+  get_motor_enums.srv
+  )
+
+add_message_files(DIRECTORY msg
   FILES
   depth.msg
   powerboard.msg

@@ -1,0 +1,18 @@
+states:
+  dive:
+    procedure: ProcedureA
+    error: A
+    next: A
+  surface:
+    procedure: DiveProcedure
+    error: surface
+    next: surface
+  A:
+    procedure: ProcedureA
+    error: list/B
+    next: list/B
+  list:
+    B:
+      procedure: ProcedureB
+      error: A
+      next: A

@@ -1,0 +1,38 @@
+<launch>
+    <!-- Arguments that can be overriden from the command line-->
+    <!-- Append argname:=argvalue to roslaunch command in order to override -->
+    <arg name="record" default="true"/>
+    <arg name="save_location" default="$(env HOME)/rosbag/main_"/>
+    <arg name="front_camera" value="front_camera"/>
+
+    <!-- Included include files -->
+    <include file="$(find webgui)/webgui.launch"/>
+    <!--include file="$(find vision)/launchfiles/camera.launch">
+        <arg name="node_name" value="bottom_camera"/>
+        <arg name="fps" value="1"/>
+        <arg name="fd" value="/dev/video2"/>
+        <arg name="record" value="$(arg record)"/>
+    </include-->
+    <include file="$(find vision)/launchfiles/camera.launch">
+        <arg name="node_name" value="$(arg front_camera)"/>
+        <arg name="fps" value="1"/>
+        <arg name="fd" value="/dev/video1"/>
+        <arg name="record" value="$(arg record)"/>
+    </include>
+    <include file="$(find vision)/launchfiles/jetson_csi_cam.launch">
+        <arg name="record" value="$(arg record)"/>                       
+    </include>
+    <include file="$(find vision)/launchfiles/scanner.launch">
+        <arg name="cam_name" value="$(arg front_camera)"/>
+    </include>
+
+    <include file="$(find monitor)/launchfiles/serial.launch"/>
+    <include file="$(find peripherals)/launchfiles/power_board.launch"/>
+    <include file="$(find peripherals)/launchfiles/imu.launch"/>
+    <include file="$(find peripherals)/launchfiles/hydrophones.launch"/>
+    <include file="$(find peripherals)/launchfiles/motors.launch"/>
+
+    <group if="$(arg record)">
+        <node name="rosbag" pkg="rosbag" type="record"  args="-o $(arg save_location) -a -x /video/(.*)"/> 
+    </group> 
+</launch>

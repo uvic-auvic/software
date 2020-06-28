@@ -1,0 +1,49 @@
+<launch>
+	<!-- Arguments that can be overriden from the command line-->
+  <!-- Append argname:=argvalue to roslaunch command in order to override -->
+  <arg name="record" default="true"/>
+  <arg name="save_location" default="$(env HOME)/rosbag/main_"/>
+  <arg name="max_linear_vel" value="5.0"/>
+  <arg name="max_angular_vel" value="180.0"/>
+  <arg name="front_camera" value="front_camera"/>
+
+  <!-- Included include files -->
+  <!-- Vision Nodes -->
+
+	<!-- Webgui -->
+  <include file="$(find webgui)/webgui.launch">
+  </include>
+
+	<!-- Computer Vision -->
+  <include file="$(find vision)/launchfiles/vision.launch">
+  </include>
+
+  <!-- Peripheral/Monitor Nodes -->
+  <include file="$(find monitor)/launchfiles/serial.launch"/>
+  <include file="$(find peripherals)/launchfiles/power_board.launch"/>
+  <include file="$(find peripherals)/launchfiles/imu.launch"/>
+  <!--include file="$(find peripherals)/launchfiles/hydrophones.launch"/-->
+  <include file="$(find peripherals)/launchfiles/motors.launch"/>
+
+  <!-- Control System -->
+  <include file="$(find controlsystem)/launchfiles/tests/controlsystem_idle_test.launch">
+  </include>
+
+  <!-- Navigation Nodes -->
+  <!-- Navigation System -->
+  <include file="$(find navigation)/launchfiles/navigationsystem.launch">
+    <arg name="max_linear_vel" value="$(arg max_linear_vel)"/>
+    <arg name="max_angular_vel" value="$(arg max_angular_vel)"/>
+  </include>
+	<!-- Thrustmap Node -->
+  <include file="$(find navigation)/launchfiles/thrustmap.launch">
+    <arg name="max_linear_vel" value="$(arg max_linear_vel)"/>
+    <arg name="max_angular_vel" value="$(arg max_angular_vel)"/>
+  </include>
+	<!-- RPM Controller -->
+  <include file="$(find navigation)/launchfiles/rpm_controller.launch"/>
+
+  <group if="$(arg record)">
+    <node name="rosbag" pkg="rosbag" type="record"  args="-o $(arg save_location) -a -x /video/(.*)"/> 
+  </group> 
+</launch>
