@@ -1,2 +1,2 @@
 # software
-2021 submarine code
+Hosts Trident's code for the 2021 Robosub competition.
