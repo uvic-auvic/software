@@ -4,7 +4,7 @@
 // @param1 nodehandle to speak with auvic topics
 Grabber::Grabber(ros::NodeHandle* n_auvic){
         this->sub = n_auvic->subscribe<can_msgs::Frame>("limb", 10, &Grabber::topic_callback, this);
-        this->client = n_auvic->serviceClient<monitor::GetDeviceMessage>("toCAN");
+        this->client = n_auvic->serviceClient<auvic_msgs::devices_to_monitor>("toCAN");
 }
 
 Grabber::~Grabber(){};

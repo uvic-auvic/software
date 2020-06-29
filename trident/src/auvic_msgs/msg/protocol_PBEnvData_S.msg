@@ -1,0 +1,4 @@
+uint16 extPressure
+uint16 intPressure
+uint16 intTemperature
+uint16 intHumidity

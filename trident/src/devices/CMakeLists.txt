@@ -7,44 +7,9 @@ if(NOT CMAKE_CXX_STANDARD)
 endif()
 
 find_package(catkin REQUIRED COMPONENTS
-  can_msgs
   roscpp
-  message_generation
-  std_msgs
-  geometry_msgs
-)
-
-add_service_files(DIRECTORY srv
-  FILES
-  motor.srv
-  motors.srv
-  power_enable.srv
-  avg_data.srv
-  hydro_data.srv
-  set_vel.srv
-  hydro_ffts.srv
-  hydro_phases.srv
-  get_motor_enums.srv
-  )
-
-add_message_files(DIRECTORY msg
-  FILES
-  depth.msg
-  powerboard.msg
-  imu.msg
-  orientation.msg
-  motor_enums.msg
-  hydro.msg
-  rpms.msg
-  polar_num.msg
-  hydro_fft.msg
-)
-
-## message dependencies
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-  geometry_msgs
+  auvic_msgs
+  can_msgs
 )
 
 catkin_package(
@@ -61,11 +26,9 @@ catkin_package(
       powerboard
       torpedo
    CATKIN_DEPENDS
-      can_msgs
-      message_runtime
-      std_msgs
       roscpp
-      geometry_msgs
+      auvic_msgs
+      can_msgs
 )
 
 include_directories(
@@ -74,85 +37,85 @@ include_directories(
 )
 
 # dropper
-add_library(dropper src/dropper.cpp)
+add_library(dropper src/dropper.cpp )
 target_link_libraries(dropper ${catkin_LIBRARIES})
 add_dependencies(dropper ${catkin_EXPORTED_TARGETS})
 
 # dropper_node
 add_executable(dropper_node src/dropper_node.cpp include/peripheral_manager.hpp)
-target_link_libraries(dropper_node dropper ${catkin_LIBRARIES})
+target_link_libraries(dropper_node dropper    ${catkin_LIBRARIES})
 
 # dvl
-add_library(dvl src/dvl.cpp)
+add_library(dvl src/dvl.cpp )
 target_link_libraries(dvl ${catkin_LIBRARIES})
-add_dependencies(dvl ${catkin_EXPORTED_TARGETS})
+add_dependencies(dvl   ${catkin_EXPORTED_TARGETS})
 
 # dvl_node
 add_executable(dvl_node src/dvl_node.cpp include/peripheral_manager.hpp)
-target_link_libraries(dvl_node dvl ${catkin_LIBRARIES})
+target_link_libraries(dvl_node dvl    ${catkin_LIBRARIES})
 
 # grabber
-add_library(grabber src/grabber.cpp)
+add_library(grabber src/grabber.cpp )
 target_link_libraries(grabber ${catkin_LIBRARIES})
-add_dependencies(grabber ${catkin_EXPORTED_TARGETS})
+add_dependencies(grabber   ${catkin_EXPORTED_TARGETS})
 
 # grabber_node
 add_executable(grabber_node src/grabber_node.cpp include/peripheral_manager.hpp)
-target_link_libraries(grabber_node grabber ${catkin_LIBRARIES})
+target_link_libraries(grabber_node grabber    ${catkin_LIBRARIES})
 
 # hydrophone
-add_library(hydrophone src/hydrophone.cpp)
+add_library(hydrophone src/hydrophone.cpp )
 target_link_libraries(hydrophone ${catkin_LIBRARIES})
-add_dependencies(hydrophone ${catkin_EXPORTED_TARGETS})
+add_dependencies(hydrophone   ${catkin_EXPORTED_TARGETS})
 
 # hydrophone_node
 add_executable(hydrophone_node src/hydrophone_node.cpp include/peripheral_manager.hpp)
-target_link_libraries(hydrophone_node hydrophone ${catkin_LIBRARIES})
+target_link_libraries(hydrophone_node hydrophone    ${catkin_LIBRARIES})
 
 # imu
-add_library(imu src/imu.cpp)
+add_library(imu src/imu.cpp ) 
 target_link_libraries(imu ${catkin_LIBRARIES})
-add_dependencies(imu ${catkin_EXPORTED_TARGETS})
+add_dependencies(imu   ${catkin_EXPORTED_TARGETS})
 
 # imu_node
 add_executable(imu_node src/imu_node.cpp include/peripheral_manager.hpp)
-target_link_libraries(imu_node imu ${catkin_LIBRARIES})
+target_link_libraries(imu_node imu    ${catkin_LIBRARIES})
 
 # lcd_board
-add_library(lcd_board src/lcd_board.cpp)
+add_library(lcd_board src/lcd_board.cpp )
 target_link_libraries(lcd_board ${catkin_LIBRARIES})
-add_dependencies(lcd_board ${catkin_EXPORTED_TARGETS})
+add_dependencies(lcd_board   ${catkin_EXPORTED_TARGETS})
 
 # lcd_board_node
 add_executable(lcd_board_node src/lcd_board_node.cpp include/peripheral_manager.hpp)
-target_link_libraries(lcd_board_node lcd_board ${catkin_LIBRARIES})
+target_link_libraries(lcd_board_node lcd_board    ${catkin_LIBRARIES})
 
 # motorcontroller
-add_library(motorcontroller src/motorcontroller.cpp)
+add_library(motorcontroller src/motorcontroller.cpp )
 target_link_libraries(motorcontroller ${catkin_LIBRARIES})
-add_dependencies(motorcontroller ${catkin_EXPORTED_TARGETS})
+add_dependencies(motorcontroller   ${catkin_EXPORTED_TARGETS})
 
 # motorcontroller_node
 add_executable(motorcontroller_node src/motorcontroller_node.cpp include/peripheral_manager.hpp)
-target_link_libraries(motorcontroller_node motorcontroller ${catkin_LIBRARIES})
+target_link_libraries(motorcontroller_node motorcontroller    ${catkin_LIBRARIES})
 
 # powerboard
-add_library(powerboard src/powerboard.cpp)
+add_library(powerboard src/powerboard.cpp )
 target_link_libraries(powerboard ${catkin_LIBRARIES})
-add_dependencies(powerboard ${catkin_EXPORTED_TARGETS})
+add_dependencies(powerboard   ${catkin_EXPORTED_TARGETS})
 
 # powerboard_node
 add_executable(powerboard_node src/powerboard_node.cpp include/peripheral_manager.hpp)
-target_link_libraries(powerboard_node powerboard ${catkin_LIBRARIES})
+target_link_libraries(powerboard_node powerboard    ${catkin_LIBRARIES})
 
 # torpedo
-add_library(torpedo src/torpedo.cpp)
+add_library(torpedo src/torpedo.cpp )
 target_link_libraries(torpedo ${catkin_LIBRARIES})
-add_dependencies(torpedo ${catkin_EXPORTED_TARGETS})
+add_dependencies(torpedo   ${catkin_EXPORTED_TARGETS})
 
 # torpedo_node
 add_executable(torpedo_node src/torpedo_node.cpp include/peripheral_manager.hpp)
-target_link_libraries(torpedo_node torpedo ${catkin_LIBRARIES})
+target_link_libraries(torpedo_node torpedo    ${catkin_LIBRARIES})
 
 install(
   TARGETS

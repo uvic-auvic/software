@@ -3,7 +3,6 @@
 // auvic libraries
 #include "can_manager.hpp"
 
-
 // @param1 nodehandle to speak with auvic topics
 // @param2 nodehandle reserved for socketcan topics
 Can_Manager::Can_Manager(ros::NodeHandle* n_auvic, ros::NodeHandle* n_socketcan){
@@ -27,134 +26,82 @@ Can_Manager::Can_Manager(ros::NodeHandle* n_auvic, ros::NodeHandle* n_socketcan)
         this->Peripheral_hydrophone = n_auvic->advertise<can_msgs::Frame>("acoustics", 10);   
 }
 
+void Can_Manager::message_handle(ros::Publisher Peripheral_topic_handle, std::string topic, can_msgs::Frame msg){
+    ROS_INFO_ONCE("can_manager: publishing to [%s] topic.\n", topic.c_str());
+    // Ignore message if the subscriber is not active
+    uint32_t subCount = Peripheral_topic_handle.getNumSubscribers();
+    if(subCount == 0){
+        subCount = Peripheral_topic_handle.getNumSubscribers();
+        ROS_ERROR_ONCE("can_manager: not enough subscribers. Throwing away message...\n");
+    } else {
+        Peripheral_topic_handle.publish(msg);
+        ROS_INFO_ONCE("Published message to '[%s]'.\n", topic.c_str());
+    }
+}
 
 // handles messages received from the can bus
 // @param: msg: a ptr to the message received from the can bus. 
 void Can_Manager::From_Can(const can_msgs::Frame::ConstPtr& msg){
-    ROS_INFO_ONCE("The frame id is: [%d]", msg->id);
-    
-    // lookup topic from id list and send message
-    uint32_t numOfSubs1, numOfSubs2, numOfSubs3, numOfSubs4, numOfSubs5, numOfSubs6, numOfSubs7, numOfSubs8, numOfSubs9;
-    switch(msg->id){
-        case 1: // imu
-            ROS_INFO_ONCE("publishing to 'inertia' topic from imu.");
-            //wait until there is subscribers on the topic
-            numOfSubs1 = this->Peripheral_imu.getNumSubscribers();
-            while(numOfSubs1 == 0){
-                numOfSubs1 = this->Peripheral_imu.getNumSubscribers();
-                ROS_ERROR_ONCE("monitor/can_manager_node: imu is not on the correct topic");
-            }
-            this->Peripheral_imu.publish(msg);
-            ROS_INFO_ONCE("Published message to 'inertia'.");
+    ROS_INFO_ONCE("can_manager: The frame id is [%d].\n", msg->id);
+    // get message id
+    protocol_MID_E messageID = static_cast<protocol_MID_E>(msg->id);
+
+    // lookup the message
+    /// add messages by modifying protocol.hpp 
+    switch(messageID){
+        case protocol_MID_MC_deviceName:
+            this->message_handle(this->Peripheral_motorcontroller, "motors", *msg);
             break;
-        case 2: // powerboard
-            ROS_INFO_ONCE("publishing to 'power' topic from powerboard.");
-            //wait until there is subscribers on the topic
-            numOfSubs2 = this->Peripheral_powerboard.getNumSubscribers();
-            while(numOfSubs2 == 0){
-                numOfSubs2 = this->Peripheral_powerboard.getNumSubscribers();
-                ROS_ERROR_ONCE("monitor/can_manager_node: powerboard is not on the correct topic");
-            }
-            this->Peripheral_powerboard.publish(msg);
-            ROS_INFO_ONCE("Published message to 'power'.");
+        case protocol_MID_MC_motorRPMLow:
+            this->message_handle(this->Peripheral_motorcontroller, "motors", *msg);
             break;
-        case 3: // hydrophone
-            ROS_INFO_ONCE("publishing to 'acoustics' topic from hydrophone.");
-            //wait until there is subscribers on the topic
-            numOfSubs3 = this->Peripheral_hydrophone.getNumSubscribers();
-            while(numOfSubs3 == 0){
-                numOfSubs3 = this->Peripheral_hydrophone.getNumSubscribers();
-                ROS_ERROR_ONCE("monitor/can_manager_node: hydrophone is not on the correct topic");
-            }
-            this->Peripheral_hydrophone.publish(msg);
-            ROS_INFO_ONCE("Published message to 'acoustic'.");
+        case protocol_MID_MC_motorRPMHigh:
+            this->message_handle(this->Peripheral_motorcontroller, "motors", *msg);
             break;
-        case 4: // motorcontroller
-            ROS_INFO_ONCE("publishing to 'motors' topic from motorcontroller.");
-            //wait until there is subscribers on the topic
-            numOfSubs4 = this->Peripheral_motorcontroller.getNumSubscribers();
-            while(numOfSubs4 == 0){
-                numOfSubs4 = this->Peripheral_motorcontroller.getNumSubscribers();
-                ROS_ERROR_ONCE("monitor/can_manager_node: motorcontroller is not on the correct topic");
-            }
-            this->Peripheral_motorcontroller.publish(msg);
-            ROS_INFO_ONCE("Published message to 'motors'.");
+        case protocol_MID_PB_deviceName:
+            this->message_handle(this->Peripheral_powerboard, "power", *msg);
             break;
-        case 5: // torpedo
-            ROS_INFO_ONCE("publishing to 'LRweapon' topic from torpedo.");
-            //wait until there is subscribers on the topic
-            numOfSubs5 = this->Peripheral_torpedo.getNumSubscribers();
-            while(numOfSubs5 == 0){
-                numOfSubs5 = this->Peripheral_torpedo.getNumSubscribers();
-                ROS_ERROR_ONCE("monitor/can_manager_node: torpedo is not on the correct topic");
-            }
-            this->Peripheral_torpedo.publish(msg);
-            ROS_INFO_ONCE("Published message to 'LRweapon'.");
+        case protocol_MID_PB_envData: // Environmental Data
+            this->message_handle(this->Peripheral_powerboard, "power", *msg);
             break;
-        case 6: // lcd_board
-            ROS_INFO_ONCE("publishing to 'RGBdebug' topic from lcd_board.");
-            //wait until there is subscribers on the topic
-            numOfSubs6 = this->Peripheral_lcd_board.getNumSubscribers();
-            while(numOfSubs6 == 0){
-                ROS_ERROR_ONCE("monitor/can_manager_node: lcd_board is not on the correct topic");
-                numOfSubs6 = this->Peripheral_lcd_board.getNumSubscribers();
-            }
-            this->Peripheral_lcd_board.publish(msg);
-            ROS_INFO_ONCE("Published message to 'RGBdebug'.");
+        case protocol_MID_PB_battVoltages:
+            this->message_handle(this->Peripheral_powerboard, "power", *msg);
             break;
-        case 7: // ball_dropper
-            ROS_INFO_ONCE("publishing to 'SRweapon' topic from Ball_dropper.");
-            //wait until there is subscribers on the topic
-            numOfSubs7 = this->Peripheral_dropper.getNumSubscribers();
-            while(numOfSubs7 == 0){
-                ROS_ERROR_ONCE("monitor/can_manager_node: dropper is not on the correct topic");
-                numOfSubs7 = this->Peripheral_dropper.getNumSubscribers();
-            }
-            this->Peripheral_dropper.publish(msg);
-            ROS_INFO_ONCE("Published message to 'SRweapon'.");
-            break;
-        case 8: // grabber
-            ROS_INFO_ONCE("publishing to 'limb' topic from Grabber.");
-            //wait until there is subscribers on the topic
-            numOfSubs8 = this->Peripheral_imu.getNumSubscribers();
-            while(numOfSubs8 == 0){
-                ROS_ERROR_ONCE("monitor/can_manager_node: grabber is not on the correct topic");
-                numOfSubs8 = this->Peripheral_imu.getNumSubscribers();
-            }
-            this->Peripheral_imu.publish(msg);
-            ROS_INFO_ONCE("Published message to 'limb'.");
-            break;
-        case 9: // dvl
-            ROS_INFO_ONCE("publishing to 'tracker' topic from dvl.");
-            //wait until there is subscribers on the topic
-            numOfSubs9 = this->Peripheral_dvl.getNumSubscribers();
-            while(numOfSubs9 == 0){
-                ROS_ERROR_ONCE("monitor/can_manager_node: dvl is not on the correct topic");
-                numOfSubs9 = this->Peripheral_dvl.getNumSubscribers();
-            }
-            this->Peripheral_dvl.publish(msg);
-            ROS_INFO_ONCE("Published message to 'tracker'.");
-            break;
-        default:
-            ROS_DEBUG_ONCE("msg_id from 'THECALLfromTheBUS' in Monitor package was incorrect");
+        case protocol_MID_PB_battCurrents:
+            this->message_handle(this->Peripheral_powerboard, "power", *msg);
             break;
     }
-    // continue
+    // end callback
 }  
 
-//  publishes message to socketCAN
-bool Can_Manager::To_Can(GetDeviceMessageReq& req, GetDeviceMessageRes& res){
+// Service: gets data from node, returns an ack, but first assemble can_msg publishes message to socketCAN
+bool Can_Manager::To_Can(GetMonitorReq& req, GetMonitorRes& res){
+    // make can_frame
+    can_msgs::Frame package;
+    Make_Can_msg(req, package);
+    // Send onto can bus
     ROS_INFO_ONCE("Sending msg from [%s] to [socketcan_bridge].\n", req.node_name.c_str());
-    this->send_.publish(req.msg);
-    ROS_INFO_ONCE("Published message.\n");
+    this->send_.publish(package);
+    ROS_INFO_ONCE("can_manager: Published message.\n");
     res.ack = "sent.";
     return true;
 }
 
-// TODO: Assemble can_msg for socketcan_bridge
-can_msgs::Frame Can_Manager::Make_Can_msg(){
-    can_msgs::Frame msg;
-    return msg;
+void Can_Manager::Make_Can_msg(GetMonitorReq& input, can_msgs::Frame& output){
+    output.id = (uint32_t)input.message_id.id;
+    // remote transmisson request? signfies where the id frame ends for 11 bit frame
+    // we always want this as true
+    output.is_rtr = true;
+    // does the message contain more then 64 bits? keep it false for now and add feature if needed.
+    output.is_extended = false;
+    // not sure
+    output.is_error = false;
+    // data length code: set it to max for now, and in the future update, have the services define the frame length.
+    /// max = 8 bytes
+    output.dlc = 0xFF;
+    // ... sigh... okay lets make another list....
+    /// frick. I dont want to. - Aman
+    output.data = {0x6e, 0x6f, 0x70, 0x65, 0x21, 0x00, 0x00, 0x00};
 }
 
 // TODO: check which devices are connected to the CAN bus
@@ -171,3 +118,9 @@ void Can_Manager::Check_device_status(std::string device_name){
 void Can_Manager::Check_all_devices_status(){
 
 }
+
+// TODO: do a CRC
+void Can_Manager::CRC(){
+        
+}
+

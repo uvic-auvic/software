@@ -3,8 +3,8 @@
 
 // @param1 nodehandle to speak with auvic topics
 Powerboard::Powerboard(ros::NodeHandle* n_auvic){
-        this->sub = n_auvic->subscribe<can_msgs::Frame>("power", 10, &Powerboard::topic_callback, this);
-        this->client = n_auvic->serviceClient<monitor::GetDeviceMessage>("toCAN");
+    this->sub = n_auvic->subscribe<can_msgs::Frame>("power", 10, &Powerboard::topic_callback, this);
+    this->client = n_auvic->serviceClient<auvic_msgs::devices_to_monitor>("toCAN");
 }
 
 Powerboard::~Powerboard(){};
@@ -15,24 +15,7 @@ void Powerboard::topic_callback(const can_msgs::Frame::ConstPtr& msg) {
     ROS_INFO_ONCE("Powerboard: message received");
 }
 
-// this method gets called when sending a mesage onto can bus.
-// TODO: have methods send data here to be compiled into a proper frame
-// bool Powerboard::send_frame(const can_msgs::Frame::ConstPtr& data){
-//     // add a node label - just for debugging purposes
-//     this->srv.request.node_name = "powerboard";
-//     // add the can message to the srv
-//     // this->srv.request.msg = ....;
-//     if(this->client.call(this->srv)){
-//         ROS_INFO("From monitor/can_manager: %s", this->srv.response.ack.c_str());
-//     } else {
-//         ROS_ERROR("Failed to call service 'toCAN' from Peripherals/powerboard_node");
-//         return false;
-//     }
-//     ROS_INFO("message sent.");
-//     return true;
-// }
-
-// TODO: get_powerboard_data: will create a can_msgs file and pass to 'send_frame'
+// TODO: select message ID and initiate the toCan service
 bool Powerboard::get_powerboard_data(){
     return false;
 }
@@ -46,3 +29,14 @@ bool Powerboard::power_enabler(){
 bool Powerboard::average_ext_pressure(){
     return false;
 }
+
+// TODO: return depth data from powerboardData
+bool depth_from_sensor(){
+    return false;
+}
+
+// TODO: return temperature data from powerbardData
+bool temperature_from_sensor(){
+    return false;
+}
+

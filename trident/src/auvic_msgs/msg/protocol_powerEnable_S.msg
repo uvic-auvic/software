@@ -1,0 +1,3 @@
+bool motorPowerEnable
+bool PowerEnable5V
+bool PowerEnable12V9V

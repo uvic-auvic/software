@@ -4,7 +4,7 @@
 // @param1 nodehandle to speak with auvic topics
 Dvl::Dvl(ros::NodeHandle* n_auvic){
         this->sub = n_auvic->subscribe<can_msgs::Frame>("tracker", 10, &Dvl::topic_callback, this);
-        this->client = n_auvic->serviceClient<monitor::GetDeviceMessage>("toCAN");
+        this->client = n_auvic->serviceClient<auvic_msgs::devices_to_monitor>("toCAN");
 }
 
 Dvl::~Dvl(){};

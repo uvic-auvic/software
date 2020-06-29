@@ -1,2 +1,0 @@
-uint32 depth
-uint32 temperature
