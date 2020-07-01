@@ -1,0 +1,18 @@
+sudo: required 
+dist: focal 
+language: generic 
+compiler:
+  - gcc
+notifications:
+  #  Whoever receives success and/or failure via email
+  email:
+    recipients:
+      - auvic@uvic.ca  # Change this to yours should you copy this file.
+env:
+  matrix:
+    - USE_DEB=true  ROS_DISTRO="noetic" ROS_REPOSITORY_PATH=http://packages.ros.org/ros/ubuntu
+    - USE_DEB=true  ROS_DISTRO="noetic" ROS_REPOSITORY_PATH=http://packages.ros.org/ros-shadow-fixed/ubuntu
+install:
+  - git clone https://github.com/ros-industrial/industrial_ci.git .ci_config  
+script: 
+  - source .ci_config/travis.sh
