@@ -15,7 +15,8 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    #latest=18.04 (20.04 is not available yet)
+    runs-on: ubuntu-latest
     - uses: actions/checkout@v2
     steps:
       - name: Setup ros and can-utils
