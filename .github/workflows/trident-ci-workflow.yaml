@@ -58,7 +58,6 @@ jobs:
     # Action 2: build trident and run tests
     - name: build catkin_workspace 
       run: |
-        pwd
-        catkin_make -DDRIVER=virtual
+        catkin_make
       id: build
     
