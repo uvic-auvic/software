@@ -14,7 +14,7 @@ on:
       # add branches below
 
 env:
-  ROS-DISTRO: noetic
+  ROS_DISTRO: noetic
 
 defaults:
   run:
@@ -42,8 +42,8 @@ jobs:
         sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
         sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
         sudo apt update
-        sudo apt install ros-$ROS-DISTRO-ros-base
-        source /opt/ros/$ROS-DISTRO/setup.bash
+        sudo apt install ros-${ROS_DISTRO}-ros-base
+        source /opt/ros/$ROS_DISTRO/setup.bash
     
     # action 2 - print the execution time.
     - name: print execution time
