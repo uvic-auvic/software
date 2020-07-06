@@ -13,6 +13,11 @@ on:
       - master
       # add branches below
 
+defaults:
+  shell: bash
+  working-directory: trident
+
+
 jobs:
   job-setup:
     name: setup
@@ -20,11 +25,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Setup ros and can-utils
-      shell: bash
-      env:
-        # place enviroment variables here
-      id: setup
+    - name: Setup ros
+      id: setup-ros
       run: |
         echo 'getting ros setup...'
         sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
@@ -32,10 +34,10 @@ jobs:
         sudo apt update
         source /opt/ros/noetic/setup.bash
     - name: print execution time
-      shell: bash
-      run: echo 'The time to setup ros and socketCAN was ${{steps.setup.outputs.time}}.'
+      run: echo 'The time to setup ros and socketCAN was ${{steps.setup-ros.outputs.time}}.'
 
-
+  job-build:
+    needs: job-setup
 
     # - uses: actions/checkout@v2
     # steps:
