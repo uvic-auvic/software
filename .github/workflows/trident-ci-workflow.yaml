@@ -26,11 +26,11 @@ defaults:
     working-directory: trident
 
 jobs:
-  # job 1 - install ros and can-utils, builds trident, and runs a test (not sure yet)
+  # job 1 - install ros and can-utils and builds trident
   # TODO: create action files and call them instead of whats happenning below.
   job1:
     # job name
-    name: init
+    name: init_enviroment
     # latest=18.04 (20.04 is not available yet)
     runs-on: ubuntu-latest
 
@@ -62,11 +62,23 @@ jobs:
         sudo apt-get install ${ROSDEP_PYTHON}-rosdep
         sudo rosdep init
         rosdep update
-    # Action 3: build trident and run tests
+    # Action 3: build trident
     - name: build catkin_workspace 
       run: |
         source /opt/ros/${ROS_DISTRO}/setup.bash
         rosdep install --from-paths src --ignore-src -r -y
         catkin_make -DDRIVE=virtual
       id: build
-    
+  
+  # Job 2 - Test Can_manager
+  job2:
+    needs: job1
+    # job name
+    name: test_can_manager
+    # latest=18.04 (20.04 is not available yet)
+    runs-on: ubuntu-latest
+
+    # actions to execute in job1
+    steps:
+    # link actions files below
+    - uses: actions/checkout@v2
