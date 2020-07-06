@@ -16,32 +16,43 @@ on:
 jobs:
   build:
     #latest=18.04 (20.04 is not available yet)
-    runs-on: ubuntu-16.04
-    - uses: actions/checkout@v2
+    runs-on: ubuntu-latest
     steps:
-      - name: Setup ros and can-utils
-        run: |
-          echo 'getting ros setup...'
-          sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-          sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-          sudo apt update
-          source /opt/ros/noetic/setup.bash
-          echo 'getting socketCAN setup...'
-          sudo apt-get install can-utils
-          sudo modprobe vcan
-          sudo modprobe can
-          sudo modprobe slcan    
-          echo 'more stuff with canUSB, look at github repo for details.'
-        id: setup
-      
-      - name: Echo the execution time for setup
-        run: echo 'The time to setup ros and socketCAN was ${{steps.setup.outputs.time}}.'
+    - uses: actions/checkout@v2
 
-      - name: build catkin_workspace 
-        run: |
-          cd trident
-          catkin_make -DDRIVER=virtual
-        id: build
-      - name: Echo the execution time 
-        run: echo 'The time was ${{steps.build.outputs.time}}.'
+    - name: Setup ros and can-utils
+      run: |
+
+
+    - name: build catkin_workspace 
+      run: |
+
+
+    # - uses: actions/checkout@v2
+    # steps:
+    #   - name: Setup ros and can-utils
+    #     run: |
+    #       echo 'getting ros setup...'
+    #       sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+    #       sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+    #       sudo apt update
+    #       source /opt/ros/noetic/setup.bash
+    #       echo 'getting socketCAN setup...'
+    #       sudo apt-get install can-utils
+    #       sudo modprobe vcan
+    #       sudo modprobe can
+    #       sudo modprobe slcan    
+    #       echo 'more stuff with canUSB, look at github repo for details.'
+    #     id: setup
+      
+    #   - name: Echo the execution time for setup
+    #     run: echo 'The time to setup ros and socketCAN was ${{steps.setup.outputs.time}}.'
+
+    #   - name: build catkin_workspace 
+    #     run: |
+    #       cd trident
+    #       catkin_make -DDRIVER=virtual
+    #     id: build
+    #   - name: Echo the execution time 
+    #     run: echo 'The time was ${{steps.build.outputs.time}}.'
     
