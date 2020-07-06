@@ -36,9 +36,6 @@ jobs:
     - name: print execution time
       run: echo 'The time to setup ros and socketCAN was ${{steps.setup-ros.outputs.time}}.'
 
-  job-build:
-    needs: job-setup
-
     # - uses: actions/checkout@v2
     # steps:
     #   - name: Setup ros and can-utils
