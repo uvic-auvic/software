@@ -13,29 +13,41 @@ on:
       - master
       # add branches below
 
+env:
+  ROS-DISTRO: noetic
+
 defaults:
   run:
     shell: bash
     working-directory: trident
 
-
 jobs:
-  job-setup:
-    name: setup
+  # job 1 - install ros and can-utils, builds trident, and runs a test (not sure yet)
+  job1:
+    # job name
+    name: init
     # latest=18.04 (20.04 is not available yet)
     runs-on: ubuntu-latest
+
+    # actions to execute in job1
     steps:
+    # link actions files below
     - uses: actions/checkout@v2
-    - name: Setup ros
-      id: setup-ros
+
+    # action 1 - setup ros and can-utils
+    - name: Setup ros and can-utils
+      id: setup
       run: |
         echo 'getting ros setup...'
         sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
         sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
         sudo apt update
-        source /opt/ros/noetic/setup.bash
+        sudo apt install ros-$ROS-DISTRO-ros-base
+        source /opt/ros/$ROS-DISTRO/setup.bash
+    
+    # action 2 - print the execution time.
     - name: print execution time
-      run: echo 'The time to setup ros and socketCAN was ${{steps.setup-ros.outputs.time}}.'
+      run: echo 'The time to setup ros and socketCAN was ${{steps.setup.outputs.time}}.'
 
     # - uses: actions/checkout@v2
     # steps:
