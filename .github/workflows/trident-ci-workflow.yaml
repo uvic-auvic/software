@@ -14,8 +14,9 @@ on:
       # add branches below
 
 defaults:
-  shell: bash
-  working-directory: trident
+  run:
+    shell: bash
+    working-directory: trident
 
 
 jobs:
