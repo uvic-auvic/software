@@ -1,0 +1,41 @@
+name: auvic-trident-ci
+
+# how this workflow is triggered
+on:
+  push:
+    branches:
+      - master
+      # add branches below
+    tags-ignore:
+      # add tags below
+  pull_request:
+    branches:
+      - master
+      # add branches below
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    name: setup
+    steps:
+      # This step installs ros and can utils
+      - name: auvic_software_setup
+        uses: actions/auvic-software-setup-action@v1
+      # This step outputs execution time of the job
+      - name: Echo the execution time 
+        run: echo 'The time was ${{steps.hello.outputs.time}}.'
+    
+    name: build
+    steps:
+      # This step builds the catkin workspace
+      - name: auvic_software_build
+        uses: actions/auvic-software-build-action@v1
+        with:
+          catkin-workspace: 'trident'
+          # 'ignore': does not run tests | 'true': runs tests
+          test: 'ignore'
+        id: trident-build
+      # This step outputs execution time of the job
+      - name: Echo the execution time 
+        run: echo 'The time was ${{steps.hello.outputs.time}}.'
+    
