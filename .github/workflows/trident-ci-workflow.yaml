@@ -18,10 +18,10 @@ jobs:
     name: setup
     # latest=18.04 (20.04 is not available yet)
     runs-on: ubuntu-latest
-    shell: bash
     steps:
     - uses: actions/checkout@v2
     - name: Setup ros and can-utils
+      shell: bash
       env:
         # place enviroment variables here
       id: setup
@@ -32,6 +32,7 @@ jobs:
         sudo apt update
         source /opt/ros/noetic/setup.bash
     - name: print execution time
+      shell: bash
       run: echo 'The time to setup ros and socketCAN was ${{steps.setup.outputs.time}}.'
 
 
