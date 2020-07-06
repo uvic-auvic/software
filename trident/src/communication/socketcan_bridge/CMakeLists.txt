@@ -106,9 +106,7 @@ install(
 
 if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
-  find_package(roslint REQUIRED
-    CMAKE_MODULE_PATH
-    Findroslint.cmake)
+  find_package(roslint REQUIRED)
 
   roslint_cpp()
   roslint_add_test()

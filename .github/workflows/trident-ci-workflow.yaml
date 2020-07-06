@@ -17,6 +17,8 @@ env:
   # Unfortuantly, noetic is not supported for 18.04 and 20.04 is not yet available, 
   # so we are stuck working with melodic
   ROS_DISTRO: melodic
+  # Melodic=python | noetic=python3
+  ROSDEP_PYTHON: python
 
 defaults:
   run:
@@ -39,7 +41,7 @@ jobs:
 
     # action 1 - setup ros and can-utils
     - name: Setup ros and can-utils
-      id: setup
+      id: setup-ros-and-socketCAN
       run: |
         echo 'getting ros setup...'
         sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
@@ -53,11 +55,18 @@ jobs:
         sudo modprobe can
         sudo modprobe slcan    
         echo 'more stuff with canUSB, look at github repo for details.'
-
-    # Action 2: build trident and run tests
+    # Action 2: install rosdep
+    - name: Setup rosdep
+      id: setup-rosdep
+      run: |
+        sudo apt-get install ${ROSDEP_PYTHON}-rosdep
+        sudo rosdep init
+        rosdep update
+    # Action 3: build trident and run tests
     - name: build catkin_workspace 
       run: |
         source /opt/ros/${ROS_DISTRO}/setup.bash
+        rosdep install --from-paths src --ignore-src -r -y
         catkin_make
       id: build
     
