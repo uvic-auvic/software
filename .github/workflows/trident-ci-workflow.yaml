@@ -14,7 +14,7 @@ on:
       # add branches below
 
 env:
-  ROS_DISTRO: noetic
+  ROS_DISTRO: melodic
 
 defaults:
   run:
