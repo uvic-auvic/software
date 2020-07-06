@@ -16,26 +16,31 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    name: setup
+    - uses: actions/checkout@v2
     steps:
-      # This step installs ros and can utils
-      - name: auvic_software_setup
-        uses: actions/auvic-software-setup-action@v1
-      # This step outputs execution time of the job
+      - name: Setup ros and can-utils
+        run: |
+          echo 'getting ros setup...'
+          sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+          sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+          sudo apt update
+          source /opt/ros/noetic/setup.bash
+          echo 'getting socketCAN setup...'
+          sudo apt-get install can-utils
+          sudo modprobe vcan
+          sudo modprobe can
+          sudo modprobe slcan    
+          echo 'more stuff with canUSB, look at github repo for details.'
+        id: setup
+      
+      - name: Echo the execution time for setup
+        run: echo 'The time to setup ros and socketCAN was ${{steps.setup.outputs.time}}.'
+
+      - name: build catkin_workspace 
+        run: |
+          cd trident
+          catkin_make -DDRIVER=virtual
+        id: build
       - name: Echo the execution time 
-        run: echo 'The time was ${{steps.hello.outputs.time}}.'
-    
-    name: build
-    steps:
-      # This step builds the catkin workspace
-      - name: auvic_software_build
-        uses: actions/auvic-software-build-action@v1
-        with:
-          catkin-workspace: 'trident'
-          # 'ignore': does not run tests | 'true': runs tests
-          test: 'ignore'
-        id: trident-build
-      # This step outputs execution time of the job
-      - name: Echo the execution time 
-        run: echo 'The time was ${{steps.hello.outputs.time}}.'
+        run: echo 'The time was ${{steps.build.outputs.time}}.'
     
