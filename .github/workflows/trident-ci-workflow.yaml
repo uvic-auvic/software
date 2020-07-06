@@ -15,7 +15,7 @@ on:
 
 env:
   # Unfortuantly, noetic is not supported for 18.04 and 20.04 is not yet available, 
-  # so we are stuck with working with melodic
+  # so we are stuck working with melodic
   ROS_DISTRO: melodic
 
 defaults:
@@ -46,7 +46,6 @@ jobs:
         sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
         sudo apt-get update
         sudo apt-get install ros-${ROS_DISTRO}-ros-base
-        source /opt/ros/$ROS_DISTRO/setup.bash
 
         echo 'getting socketCAN setup...'
         sudo apt-get install can-utils
@@ -58,6 +57,7 @@ jobs:
     # Action 2: build trident and run tests
     - name: build catkin_workspace 
       run: |
+        source /opt/ros/${ROS_DISTRO}/setup.bash
         catkin_make
       id: build
     
