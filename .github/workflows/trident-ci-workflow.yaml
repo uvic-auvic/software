@@ -25,6 +25,7 @@ defaults:
 
 jobs:
   # job 1 - install ros and can-utils, builds trident, and runs a test (not sure yet)
+  # TODO: create action files and call them instead of whats happenning below.
   job1:
     # job name
     name: init
@@ -54,9 +55,10 @@ jobs:
         sudo modprobe slcan    
         echo 'more stuff with canUSB, look at github repo for details.'
 
+    # Action 2: build trident and run tests
     - name: build catkin_workspace 
       run: |
-        cd trident
+        pwd
         catkin_make -DDRIVER=virtual
       id: build
     
