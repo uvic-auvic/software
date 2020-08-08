@@ -1,0 +1,5 @@
+<launch>        
+          <include file="$(find vision)/launchfiles/camera_one.launch"/>
+          <include file="$(find vision)/launchfiles/camera_two.launch"/>
+          <include file="$(find motor_controller)/launchfiles/motor_controller.launch"/>
+</launch>

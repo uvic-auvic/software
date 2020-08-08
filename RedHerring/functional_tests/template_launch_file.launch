@@ -1,0 +1,7 @@
+<launch>        
+        <!--Motors-->
+        <include file="$(find motor_controller)/launchfiles/motors.launch">
+          <arg name="left_port" value="{motor_controller_left_port}"/>
+          <arg name="right_port" value="{motor_controller_right_port}"/>
+        </include>
+</launch>

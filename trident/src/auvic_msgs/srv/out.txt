@@ -1,7 +1,0 @@
-devices_MC_getMotorEnums.srv
-devices_MC_motor.srv
-devices_MC_motors.srv
-devices_PB_avgData.srv
-devices_PB_powerEnable.srv
-devices_to_monitor.srv
-out.txt

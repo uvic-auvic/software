@@ -1,0 +1,4 @@
+<launch>
+  <include file="$(find redherring_gazebo)/launchfiles/open_world.launch">
+  </include>
+</launch>

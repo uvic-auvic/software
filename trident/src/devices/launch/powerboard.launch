@@ -1,0 +1,4 @@
+<launch>
+    <node name="powerboard_node" pkg="devices" type="powerboard_node" required="true">
+    </node>
+</launch>

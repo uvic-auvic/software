@@ -1,0 +1,9 @@
+uint8 Forward=119
+uint8 Backward=115
+uint8 Left=97
+uint8 Right=100
+uint8 RotateCCW=113
+uint8 RotateCW=101
+uint8 Up=117
+uint8 Down=112
+uint8 direction

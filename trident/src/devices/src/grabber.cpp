@@ -2,16 +2,18 @@
 #include <peripheral_manager.hpp>
 
 // @param1 nodehandle to speak with auvic topics
-Grabber::Grabber(ros::NodeHandle* n_auvic){
-        this->sub = n_auvic->subscribe<can_msgs::Frame>("limb", 10, &Grabber::topic_callback, this);
-        this->client = n_auvic->serviceClient<auvic_msgs::devices_to_monitor>("toCAN");
+Grabber::Grabber(ros::NodeHandle & n_auvic){
 }
 
 Grabber::~Grabber(){};
 
-
-// TODO: what to do when reading from the topic
-// Instead of polling, maybe use a timer and interrupt it. see ROS timers for details
-void Grabber::topic_callback(const can_msgs::Frame::ConstPtr& msg) {
-    ROS_INFO_ONCE("grabber: message received");
+void Grabber::get_GRA_active(const can_msgs::Frame::ConstPtr& msg){
+    ROS_INFO("Grabber is active!");
+    Peripherals::device_list.at(devices::Grabber) = Peripherals::device_status::online;
+    if( Peripherals::device_list.at(devices::Grabber) == Peripherals::device_status::online){
+        ROS_INFO_ONCE("DEVICES/Grabber_node: Grabber is active!");
+    }
+    else {
+        ROS_WARN_ONCE("DEVICES/Grabber_node: Grabber is not active");
+    }
 }

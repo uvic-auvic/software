@@ -4,62 +4,49 @@
 
 //C++ library
 #include <vector>
+#include <map>
 #include <exception>
 #include <algorithm>
 #include <string>
 #include <iostream>
 
 // ROS kernal
-#include <ros/publisher.h>
-#include <ros/service.h>
-#include <ros/subscriber.h>
+#include <ros/ros.h>
 #include <ros/console.h>
 #include "can_msgs/Frame.h"
 
 //auvic library
-#include "protocol.h"
-#include "auvic_msgs/devices_to_monitor.h"
+#include "auvic_msgs/Monitor_Jetson_To_World.h"
 
-using GetMonitorReq = auvic_msgs::devices_to_monitor::Request;
-using GetMonitorRes = auvic_msgs::devices_to_monitor::Response;
+class SoftwareToHardware {
+public:
+    SoftwareToHardware(ros::NodeHandle & n, ros::NodeHandle & nh);
+    void Jetson_To_World(const auvic_msgs::Monitor_Jetson_To_World::ConstPtr& msg);
+private:
+    ros::Publisher Send_The_Message_To_The_World;
+    ros::Subscriber TRIDENT_deviceName;
+    ros::Subscriber TRIDENT_motorSetSpeed;
+    ros::Subscriber TRIDENT_powerEnable;
+    ros::Subscriber TRIDENT_MCISOTP;
+    
+}; // End of class 'SoftwareToHardware'
 
-class Can_Manager{
-    public:
-        Can_Manager(
-            ros::NodeHandle* n_auvic,
-            ros::NodeHandle* n_socketcan
-        );
-        void From_Can(const can_msgs::Frame::ConstPtr& msg);
+class HardwareToSoftware {
+public:
+    HardwareToSoftware(ros::NodeHandle & n, ros::NodeHandle & nh);
+    void World_To_Jetson(const can_msgs::Frame::ConstPtr& msg);
+private:
+    ros::Subscriber Get_The_Message_From_The_World;
+    ros::Publisher MC_deviceName;
+    ros::Publisher MC_motorRPMLow;
+    ros::Publisher MC_motorRPMHigh;
+    ros::Publisher MC_ISOTP;
+    ros::Publisher PB_deviceName;
+    ros::Publisher PB_envData;
+    ros::Publisher PB_battVoltages;
+    ros::Publisher PB_battCurrents;
 
-        void message_handle(ros::Publisher Peripheral_topic_handle, std::string topic, can_msgs::Frame msg);
-        // TODO: change input paramters to match messages
-        bool To_Can(GetMonitorReq& req, GetMonitorRes& res);
-        // TODO: Assemble can_msg for socketcan_bridge
-        void Make_Can_msg(GetMonitorReq& input, can_msgs::Frame& output);
-        // TODO: check which devices are connected to the CAN bus
-        void Startup_routine(ros::NodeHandle* n_auvic);
-        // TODO: Check a single device status on the CAN bus
-        void Check_device_status(std::string device_name);
-        // TODO: Check all devices on the CAN bus
-        void Check_all_devices_status();
-        // TODO: do a CRC
-        void CRC();
-    private:
-        ros::Publisher send_;
-        ros::ServiceServer node_server_;
-        ros::Subscriber receive_;
 
-        ros::Publisher Peripheral_torpedo;
-        ros::Publisher Peripheral_powerboard;
-        ros::Publisher Peripheral_motorcontroller;
-        ros::Publisher Peripheral_lcd_board;
-        ros::Publisher Peripheral_dvl;
-        ros::Publisher Peripheral_imu;
-        ros::Publisher Peripheral_grabber;
-        ros::Publisher Peripheral_dropper;
-        ros::Publisher Peripheral_hydrophone;
-        
-};
-
+}; // End of class 'SoftwareToHardware'
 
 #endif /* DEVICE_MANAGER_HPP */

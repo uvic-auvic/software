@@ -1,0 +1,6 @@
+std_msgs/String message_name
+---
+uint8[8] data
+
+# Since we have bools, arrays, and ints, the string might be the best way to send
+# the data through

@@ -3,11 +3,10 @@
 
 int main(int argc, char ** argv) {
     // Setup ROS stuff
-    ros::init(argc, argv, "hydrophone_node");
-    // "peripherals" is a namespace used to connect with the periph topics
-    ros::NodeHandle n_auvic("peripherals");
+    ros::init(argc, argv, "Devices_hydrophone_node");
+    ros::NodeHandle n_auvic("protocols");
     // start powerboard node
-    Hydrophone hydrophone(&n_auvic);
+    Hydrophone hydrophone(n_auvic);
 
     ros::spin();
     return 0;

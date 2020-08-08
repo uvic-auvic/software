@@ -1,0 +1,5 @@
+<launch>
+    <!-- Run the HS node-->
+    <node pkg="monitor" type="HardwareToSoftware_node" name="HardwareToSoftware_node" output="screen"/>
+    <!-- test test-name="test_node_HS" pkg="monitor" type="test_node_HS" / -->
+</launch>

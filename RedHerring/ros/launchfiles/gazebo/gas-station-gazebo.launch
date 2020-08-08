@@ -1,0 +1,4 @@
+<launch>
+  <include file="$(find redherring_gazebo)/launchfiles/gas_station.launch">
+  </include>
+</launch>

@@ -1,0 +1,14 @@
+<launch>        
+        <!-- Vision Node -->
+
+        <arg name="name" default="bot_face_cam"/>
+        <arg name="fd" default="/dev/video1"/>
+        <arg name="pub" default="/camera/two/image"/>
+
+        <node name="camera_two" pkg="vision" type="sender" required="true">
+          <param name="name" value="$(arg name)"/>
+          <param name="fd" value="$(arg fd)"/>
+          <param name="pub" value="$(arg pub)"/>
+        </node>
+
+</launch>

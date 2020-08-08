@@ -2,41 +2,30 @@
 #include <peripheral_manager.hpp>
 
 // @param1 nodehandle to speak with auvic topics
-Powerboard::Powerboard(ros::NodeHandle* n_auvic){
-    this->sub = n_auvic->subscribe<can_msgs::Frame>("power", 10, &Powerboard::topic_callback, this);
-    this->client = n_auvic->serviceClient<auvic_msgs::devices_to_monitor>("toCAN");
+Powerboard::Powerboard(ros::NodeHandle & n_auvic){
+    PB_deviceName = n_auvic.subscribe<can_msgs::Frame>("protocol_MID_PB_deviceName", 1, &Powerboard::get_PB_active, this);
+    PB_envData = n_auvic.subscribe<can_msgs::Frame>("protocol_MID_PB_envData", 1, &Powerboard::get_PB_envData, this);
+    PB_battVoltages = n_auvic.subscribe<can_msgs::Frame>("protocol_MID_PB_battVoltages", 1, &Powerboard::get_PB_battVoltages, this);
+    PB_battCurrents = n_auvic.subscribe<can_msgs::Frame>("protocol_MID_PB_battCurrents", 1, &Powerboard::get_PB_battCurrents, this);
 }
 
 Powerboard::~Powerboard(){};
 
-// TODO: what to do when reading from the topic
-// Instead of polling, maybe use a timer and interrupt it. see ROS timers for details
-void Powerboard::topic_callback(const can_msgs::Frame::ConstPtr& msg) {
-    ROS_INFO_ONCE("Powerboard: message received");
+void Powerboard::get_PB_active(const can_msgs::Frame::ConstPtr& msg){
+    Peripherals::device_list.at(devices::Powerboard) = Peripherals::device_status::online;
+    if( Peripherals::device_list.at(devices::Powerboard) == Peripherals::device_status::online){
+        ROS_INFO_ONCE("DEVICES/POWERBOARD_NODE: Power Board is active!");
+    }
+    else {
+        ROS_WARN_ONCE("DEVICES/POWERBOARD_NODE: Power Board is not active");
+    }
 }
+void Powerboard::get_PB_envData(const can_msgs::Frame::ConstPtr& msg){
 
-// TODO: select message ID and initiate the toCan service
-bool Powerboard::get_powerboard_data(){
-    return false;
 }
+void Powerboard::get_PB_battVoltages(const can_msgs::Frame::ConstPtr& msg){
 
-// TODO: power_enabler: see polaris for implementation
-bool Powerboard::power_enabler(){
-    return false;
 }
-
-// TODO: average_ext_pressure: see polaris for implementation
-bool Powerboard::average_ext_pressure(){
-    return false;
+void Powerboard::get_PB_battCurrents(const can_msgs::Frame::ConstPtr& msg){
+    
 }
-
-// TODO: return depth data from powerboardData
-bool depth_from_sensor(){
-    return false;
-}
-
-// TODO: return temperature data from powerbardData
-bool temperature_from_sensor(){
-    return false;
-}
-

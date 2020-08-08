@@ -1,0 +1,7 @@
+_listViewThreshold;25
+forwardSensitivity;75
+pitchSensitivity;25
+rollSensitivity;25
+yawSensitivity;50
+ascentSensitivity;75
+ROVtoAUVcontrolMode;1

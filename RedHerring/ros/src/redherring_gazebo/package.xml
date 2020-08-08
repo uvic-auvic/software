@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package>
+  <name>redherring_gazebo</name>
+  <version>0.0.0</version>
+  <description>Directory which contains all the world info for the  AUVic Sim</description>
+  <maintainer email="asinha@todo.todo">asinha</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+</package>

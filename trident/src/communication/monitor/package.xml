@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>monitor</name>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
   <description>The System Monitor package</description>
   <maintainer email="anijjar@uvic.ca">anijjar</maintainer>
   <license>MIT</license>
@@ -10,6 +10,7 @@
   <build_depend>roscpp</build_depend>
   <build_depend>auvic_msgs</build_depend>
   <build_depend>can_msgs</build_depend>
+  <build_depend>rosunit</build_depend>
   <exec_depend>can_msgs</exec_depend>
   <exec_depend>auvic_msgs</exec_depend>
   <exec_depend>roscpp</exec_depend>

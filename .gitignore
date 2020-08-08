@@ -1,4 +1,6 @@
 devel/
+devel/include/*
+!devel/include/protocol
 logs/
 build/
 bin/
@@ -24,6 +26,7 @@ devel_isolated/
 # Ignore generated docs
 *.dox
 *.wikidoc
+*.vscode
 
 # eclipse stuff
 .project

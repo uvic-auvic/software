@@ -1,0 +1,5 @@
+<launch>
+    <!-- Run the SH node-->
+    <node pkg="monitor" type="SoftwareToHardware_node" name="SoftwareToHardware_node" output="screen" required="true"/>
+    <test test-name="test_node_SH" pkg="monitor" type="test_node_SH" />
+</launch>

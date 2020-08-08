@@ -1,5 +1,8 @@
+<!--
+    Launches both HardwareToSoftware_node and SoftwareToHardware_node
+-->
 <launch>
-    <node name="can_manager_node" pkg="monitor" type="can_manager_node" required="true">
-    </node>
+    <include file="$(find monitor)/launch/HS.launch"/>
+    <include file="$(find monitor)/launch/SH.launch"/>
 </launch>
 

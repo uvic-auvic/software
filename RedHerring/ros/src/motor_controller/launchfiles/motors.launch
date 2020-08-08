@@ -1,0 +1,13 @@
+<launch>       
+        <!-- Arguments (Overrideable)-->
+        <arg name="left_port" default="/dev/ttyUSB0"/>
+        <arg name="right_port" default="/dev/ttyUSB1"/>
+        <!--Nodes-->
+        <node name="motor_left" pkg="motor_controller" type="controller" required="true">
+          <param name="motor_port" value="$(left_port)"/>
+        </node>
+        <node name="motor_right" pkg="motor_controller" type="controller" required="true">
+          <param name="motor_port" value="$(right_port)"/>
+        </node>
+
+</launch>
