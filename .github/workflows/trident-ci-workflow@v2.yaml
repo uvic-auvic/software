@@ -57,13 +57,7 @@ jobs:
       id: setup-rosdep
       run: ./workflow_bash_scripts/rosdep_setup.sh
   
-    # Action 4: build trident
+    # Action 4: build trident and run tests
     - name: build catkin_workspace 
-      id: build
+      id: build-and-test
       run: ./workflow_bash_scripts/build_ws.sh
-
-    # Action 5: run all tests
-    - name: run_all_tests
-      id: testing
-      run: | 
-        catkin_make run_tests
