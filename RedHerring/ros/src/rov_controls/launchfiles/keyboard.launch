@@ -1,0 +1,3 @@
+<launch>
+    <node name ="rov_keyboard" pkg="rov_controls" type="keyboard_node" required="true"/>
+</launch>

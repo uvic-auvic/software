@@ -10,8 +10,11 @@
   <build_depend>roscpp</build_depend>
   <build_depend>auvic_msgs</build_depend>
   <build_depend>can_msgs</build_depend>
+  <build_depend>rostest</build_depend>
+  <exec_depend>rostest</exec_depend>
   <exec_depend>can_msgs</exec_depend>
   <exec_depend>auvic_msgs</exec_depend>
   <exec_depend>roscpp</exec_depend>
-  
+  <test_depend>rosunit</test_depend>
+
 </package>

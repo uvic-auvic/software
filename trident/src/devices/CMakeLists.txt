@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   auvic_msgs
   can_msgs
+  rostest
 )
 
 catkin_package(
@@ -25,6 +26,7 @@ catkin_package(
       motorcontroller
       powerboard
       torpedo
+      sailorman
    CATKIN_DEPENDS
       roscpp
       auvic_msgs
@@ -117,6 +119,19 @@ add_dependencies(torpedo   ${catkin_EXPORTED_TARGETS})
 add_executable(torpedo_node src/torpedo_node.cpp include/peripheral_manager.hpp)
 target_link_libraries(torpedo_node torpedo    ${catkin_LIBRARIES})
 
+# Sailorman
+add_library(sailorman src/sailorman.cpp )
+target_link_libraries(sailorman ${catkin_LIBRARIES})
+add_dependencies(sailorman ${catkin_EXPORTED_TARGETS})
+
+# Sailorman_node
+add_executable(sailorman_node src/sailorman_node include/sailorman.hpp)
+target_link_libraries(sailorman_node sailorman ${catkin_LIBRARIES})
+
+# periodic_node
+add_executable(periodic_node src/periodic_node include/sailorman.hpp)
+target_link_libraries(periodic_node sailorman ${catkin_LIBRARIES})
+
 install(
   TARGETS
     dropper
@@ -137,10 +152,19 @@ install(
     powerboard_node
     torpedo
     torpedo_node
+    sailorman
+    sailorman_node
+    periodic_node
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+if(CATKIN_ENABLE_TESTING)
+  # add gtest ased cpp test target and link LIBRARIES
+  #catkin_add_gtest(Test_SailorMan test/TEST_SailorMan.cpp include/sailorman.hpp)
+  #target_link_libraries(Test_SailorMan Sailorman ${catkin_LIBRARIES})
+
+endif()
 
 install(
   DIRECTORY

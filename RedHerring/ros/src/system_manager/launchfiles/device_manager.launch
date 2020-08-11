@@ -1,0 +1,3 @@
+<launch>
+    <node name="device_manager" pkg="system_manager" type="device_manager" required="true"/>
+</launch>

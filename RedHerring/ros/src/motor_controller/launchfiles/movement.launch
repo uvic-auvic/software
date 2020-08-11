@@ -1,0 +1,13 @@
+<launch>        
+        <!-- Arguments (Overrideable)-->
+        <arg name="reverse_multiplier" default="0.80"/>
+        <arg name="default_power" default="100"/>
+        <arg name="max_speed_for_default" default="2"/>         
+
+        <node name="auv_nav" pkg="motor_controller" type="movement" required="true">
+          <param name="reverse_multiplier" value="$(arg reverse_multiplier)"/>
+          <param name="default_power" value="$(arg default_power)"/>
+          <param name="max_speed_for_default" value="$(arg max_speed_for_default)"/>
+        </node>
+
+</launch>

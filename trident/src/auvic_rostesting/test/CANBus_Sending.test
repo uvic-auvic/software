@@ -1,0 +1,32 @@
+<!--
+    A test node will connect send a service request to the sailorman node, requesting
+    it to send  protocol_MID_POLARIS_DeviceName message onto the bus. I expect 
+    powerboardSimulator.py to pick it up, read it, and publish it to the console.
+
+    Packages being tested:
+        Monitor
+        Devices
+    Nodes being tested:
+        Monitor/SoftwareToHardware
+        Devices/sailorman_node
+    Test nodes:
+        auvic_rostesting/powerboardSimulator
+        auvic_rostesting/ExampleApplicationNode
+
+    NOTE: for this test to work. the virtual can has to be setup. Do this by going into /software/wiki/configuration/debug_CAN
+            and running the setup interface bash script. Call it 'vcan0' or it wont work. The can-utils interface needs to be 
+            reconfigured each time your computer is powered off.
+-->
+<launch>  
+    <node name="socketcan_bridge_node" pkg="socketcan_bridge" type="socketcan_bridge_node" output="screen" required="true">
+    <param name="can_device" value="vcan0"/>
+    </node>
+    <include file="$(find monitor)/launch/SH.launch"/>
+    <include file="$(find devices)/launch/sailor.launch"/>
+    <node name="powerboardSimulator.py" type="powerboardSimulator.py" output="screen" pkg="auvic_rostesting"/>
+    <node name="ExampleApplicationNode.py" type="ExampleApplicationNode.py" output="screen" pkg="auvic_rostesting"/>
+</launch>
+
+<!-- 
+    August 8, 2020: success.
+-->

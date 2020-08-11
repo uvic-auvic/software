@@ -1,0 +1,4 @@
+<launch>
+    <node name="SoftwareToHardware_node" pkg="monitor" type="SoftwareToHardware_node" required="true">
+    </node>
+</launch>

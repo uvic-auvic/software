@@ -1,0 +1,10 @@
+<!--
+    Launches the sailorman node that handles the sending of data to the 
+    monitor package. it halso handles retreiving the data from the Peripherals class
+-->
+<launch>
+    <node name="sailorman_node" pkg="devices" type="sailorman_node" required="true">
+    </node>
+    <node name="periodic_node" pkg="devices" type="periodic_node" required="true">
+    </node>
+</launch>

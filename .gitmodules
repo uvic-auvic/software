@@ -1,0 +1,6 @@
+[submodule "trident/src/protocol"]
+	path = trident/src/protocol
+	url = https://github.com/uvic-auvic/protocol.git
+[submodule "trident/src/openai_ros"]
+	path = trident/src/openai_ros
+	url = https://bitbucket.org/theconstructcore/openai_ros.git

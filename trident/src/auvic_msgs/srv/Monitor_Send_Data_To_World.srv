@@ -1,0 +1,5 @@
+# give sailorman_node a topic name and a can frame to send onto the can bus
+Monitor_Jetson_To_World input
+---
+std_msgs/String output
+# returns "sent." or "dropped."

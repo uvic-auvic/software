@@ -1,0 +1,16 @@
+<!-- 
+This launch script for whatever reason, needs to be run twice to work. I guess its a ros thing sicne 
+the nodes arent shutting down after the initial exit command 
+-->
+<launch>
+<!-- Link layer stuff (change vcan0 to can0 physical bus. See ros_canopen/socketcan_bridge)-->
+  <node name="socketcan_bridge_node" pkg="socketcan_bridge" type="socketcan_bridge_node" output="screen" required="true">
+    <param name="can_device" value="vcan0"/>
+  </node>
+<!-- Network Layer stuff -->
+  <include file="$(find monitor)/launch/can.launch"/>
+<!-- Transport layer stuff -->
+  <include file="$(find devices)/launch/periph.launch"/>
+  <include file="$(find devices)/launch/sailor.launch"/>
+<!-- Application layer stuff (AI, computer vision, Diagnostics, etc.)-->
+</launch>

@@ -1,0 +1,34 @@
+<!--
+    This launch file tests the monitor package by creating 1 test node to spam
+    the bus. These nodes represent devices on the physical can 
+    bus (such as powerboard and hydrophones) and replicate their behaviour.
+
+    Specifically, A test node will send the protocol_MID_PB_DeviceName message. I expect monitor to publish
+    it to its topic and the device package to set the device as "active" within the 
+    peripheral class. I will confirm it is active by looking at the rqt_console
+
+    Packages being tested:
+        Monitor
+        Devices
+    Nodes being tested:
+        Monitor/HardwareToSoftware_node
+        Devices/Powerboard_node
+    Test nodes:
+        auvic_rostesting/powerboardSimulator
+
+    NOTE: for this test to work. the virtual can has to be setup. Do this by going into /software/wiki/configuration/debug_CAN
+            and running the setup interface bash script. Call it 'vcan0' or it wont work. The can-utils interface needs to be 
+            reconfigured each time your computer is powered off.
+-->
+<launch>  
+    <node name="socketcan_bridge_node" pkg="socketcan_bridge" type="socketcan_bridge_node" output="screen" required="true">
+    <param name="can_device" value="vcan0"/>
+    </node>
+    <include file="$(find monitor)/launch/HS.launch"/>
+    <include file="$(find devices)/launch/powerboard.launch"/>
+    <node name="powerboardSimulator.py" type="powerboardSimulator.py" output="screen" pkg="auvic_rostesting"/>
+</launch>
+
+<!-- 
+    August 1, 2020: success.
+-->

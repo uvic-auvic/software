@@ -2,16 +2,17 @@
 #include <peripheral_manager.hpp>
 
 // @param1 nodehandle to speak with auvic topics
-Dvl::Dvl(ros::NodeHandle* n_auvic){
-        this->sub = n_auvic->subscribe<can_msgs::Frame>("tracker", 10, &Dvl::topic_callback, this);
-        this->client = n_auvic->serviceClient<auvic_msgs::devices_to_monitor>("toCAN");
-}
+Dvl::Dvl(ros::NodeHandle & n_auvic){}
 
 Dvl::~Dvl(){};
 
-
-// TODO: what to do when reading from the topic
-// Instead of polling, maybe use a timer and interrupt it. see ROS timers for details
-void Dvl::topic_callback(const can_msgs::Frame::ConstPtr& msg) {
-    ROS_INFO_ONCE("dvl: message received");
+void Dvl::get_DVL_active(const can_msgs::Frame::ConstPtr& msg){
+    ROS_INFO("DVL is active!");
+    Peripherals::device_list.at(devices::Dvl) = Peripherals::device_status::online;
+    if( Peripherals::device_list.at(devices::Dvl) == Peripherals::device_status::online){
+        ROS_INFO_ONCE("DEVICES/DVL_node: DVL is active!");
+    }
+    else {
+        ROS_WARN_ONCE("DEVICES/DVL_node: DVL is not active");
+    }
 }

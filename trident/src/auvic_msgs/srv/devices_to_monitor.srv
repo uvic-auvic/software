@@ -1,5 +1,0 @@
-auvic_msgs/protocol_MID_E message_id
-auvic_msgs/protocol_allMessages_U message
-string node_name
----
-string ack

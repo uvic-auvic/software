@@ -1,0 +1,63 @@
+name: auvic-trident-ci
+
+# how this workflow is triggered
+on:
+  push:
+    branches:
+      - master
+      # add branches below
+    tags-ignore:
+      # add tags below
+  pull_request:
+    branches:
+      - master
+      # add branches below
+
+env:
+  # Unfortuantly, noetic is not supported for 18.04 and 20.04 is not yet available, 
+  # so we are stuck working with melodic
+  ROS_DISTRO: melodic
+  # Melodic=python | noetic=python3
+  ROSDEP_PYTHON: python
+
+defaults:
+  run:
+    shell: bash
+    working-directory: wiki/configuration/
+
+
+# When adding tests, create a new job that is the name of your package that depends on the first job. You 
+# can feel free to mess around with actions and githubs stuff, but the easiest way is to store them in
+# "workflow_bash_scripts" and call them as below. Maybe add some more folders to keep it tidy.
+jobs:
+  # job 1 - install ros and can-utils and builds trident
+  job1:
+    # job name
+    name: Install tools and build Trident
+    # latest=18.04 (20.04 is not available yet)
+    runs-on: ubuntu-latest
+
+    # actions to execute in job1
+    steps:
+    # link actions files below
+    - uses: actions/checkout@v2
+
+    # action 1 - setup ros
+    - name: Setup ros 
+      id: setup-ros
+      run: ./workflow_bash_scripts/melodic_setup.sh
+
+    # action 2 - setup can-utils
+    - name: Setup can-utils
+      id: setup-socketCAN
+      run: ./system_setup/socketCAN_setup.sh
+
+    # Action 3: install rosdep
+    - name: Setup rosdep
+      id: setup-rosdep
+      run: ./workflow_bash_scripts/rosdep_setup.sh
+  
+    # Action 4: build trident and run tests
+    - name: build catkin_workspace 
+      id: build-and-test
+      run: ./workflow_bash_scripts/build_ws.sh

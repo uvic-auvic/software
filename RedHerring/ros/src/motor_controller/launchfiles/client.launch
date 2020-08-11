@@ -1,0 +1,3 @@
+<launch>
+    <node name="client" pkg="motor_controller" type="client" required="true"/>
+</launch>

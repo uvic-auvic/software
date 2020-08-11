@@ -2,16 +2,18 @@
 #include <peripheral_manager.hpp>
 
 // @param1 nodehandle to speak with auvic topics
-Lcd_Board::Lcd_Board(ros::NodeHandle* n_auvic){
-        this->sub = n_auvic->subscribe<can_msgs::Frame>("RGBdebug", 10, &Lcd_Board::topic_callback, this);
-        this->client = n_auvic->serviceClient<auvic_msgs::devices_to_monitor>("toCAN");
+Lcd_Board::Lcd_Board(ros::NodeHandle & n_auvic){
 }
 
 Lcd_Board::~Lcd_Board(){};
 
-
-// TODO: what to do when reading from the topic
-// Instead of polling, maybe use a timer and interrupt it. see ROS timers for details
-void Lcd_Board::topic_callback(const can_msgs::Frame::ConstPtr& msg) {
-    ROS_INFO_ONCE("lcd_board: message received");
+void Lcd_Board::get_LCD_active(const can_msgs::Frame::ConstPtr& msg){
+    ROS_INFO("Lcd_Board is active!");
+    Peripherals::device_list.at(devices::Lcd_Board) = Peripherals::device_status::online;
+    if( Peripherals::device_list.at(devices::Lcd_Board) == Peripherals::device_status::online){
+        ROS_INFO_ONCE("DEVICES/Lcd_Board_node: Lcd_Board is active!");
+    }
+    else {
+        ROS_WARN_ONCE("DEVICES/Lcd_Board_node: Lcd_Board is not active");
+    }
 }

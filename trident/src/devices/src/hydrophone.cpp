@@ -2,16 +2,29 @@
 #include <peripheral_manager.hpp>
 
 // @param1 nodehandle to speak with auvic topics
-Hydrophone::Hydrophone(ros::NodeHandle* n_auvic){
-        this->sub = n_auvic->subscribe<can_msgs::Frame>("acoustics", 10, &Hydrophone::topic_callback, this);
-        this->client = n_auvic->serviceClient<auvic_msgs::devices_to_monitor>("toCAN");
-}
+Hydrophone::Hydrophone(ros::NodeHandle & n_auvic){}
 
 Hydrophone::~Hydrophone(){};
 
-
-// TODO: what to do when reading from the topic
-// Instead of polling, maybe use a timer and interrupt it. see ROS timers for details
-void Hydrophone::topic_callback(const can_msgs::Frame::ConstPtr& msg) {
-    ROS_INFO_ONCE("hydrophone: message received");
+void Hydrophone::get_HYD_active(const can_msgs::Frame::ConstPtr& msg){
+    ROS_INFO("Hydrophone is active!");
+    Peripherals::device_list.at(devices::Hydrophone) = Peripherals::device_status::online;
+    if( Peripherals::device_list.at(devices::Hydrophone) == Peripherals::device_status::online){
+        ROS_INFO_ONCE("DEVICES/Hydrophone_node: Hydrophone is active!");
+    }
+    else {
+        ROS_WARN_ONCE("DEVICES/Hydrophone_node: Hydrophone is not active");
+    }
 }
+/// TODO: Send Message ID and data to send_frame
+void get_raw_data(const can_msgs::Frame::ConstPtr& msg){};
+/// TODO: Send Message ID and data to send_frame
+void get_fft_data(const can_msgs::Frame::ConstPtr& msg){};
+/// TODO: Send Message ID and data to send_frame
+void get_hydro_phases(const can_msgs::Frame::ConstPtr& msg){};
+
+
+/// TODO:
+void acquire_hydro_data(){};
+/// TODO:
+void compute_fft(){};

@@ -2,16 +2,31 @@
 #include <peripheral_manager.hpp>
 
 // @param1 nodehandle to speak with auvic topics
-Motorcontroller::Motorcontroller(ros::NodeHandle* n_auvic){
-        this->sub = n_auvic->subscribe<can_msgs::Frame>("motors", 10, &Motorcontroller::topic_callback, this);
-        this->client = n_auvic->serviceClient<auvic_msgs::devices_to_monitor>("toCAN");
+Motorcontroller::Motorcontroller(ros::NodeHandle & n_auvic) {
+    MC_deviceName = n_auvic.subscribe<can_msgs::Frame>("protocol_MID_MC_deviceName", 1, &Motorcontroller::get_MC_active, this);
+    MC_motorRPMLow = n_auvic.subscribe<can_msgs::Frame>("protocol_MID_MC_motorRPMLow", 1, &Motorcontroller::get_MC_motorRPMLow, this);
+    MC_motorRPMHigh = n_auvic.subscribe<can_msgs::Frame>("protocol_MID_MC_motorRPMHigh", 1, &Motorcontroller::get_MC_motorRPMHigh, this);
+    MC_ISOTP = n_auvic.subscribe<can_msgs::Frame>("protocol_MID_MC_ISOTP", 1, &Motorcontroller::get_MC_ISOTP, this);
 }
 
 Motorcontroller::~Motorcontroller(){};
 
+void Motorcontroller::get_MC_active(const can_msgs::Frame::ConstPtr& msg){
+    ROS_INFO("Motor Controller is active!");
+    Peripherals::device_list.at(devices::Motorcontroller) = Peripherals::device_status::online;
+    if( Peripherals::device_list.at(devices::Motorcontroller) == Peripherals::device_status::online){
+        ROS_INFO_ONCE("DEVICES/MOTORCONTROLLER_NODE: motor controller is active!");
+    }
+    else {
+        ROS_WARN_ONCE("DEVICES/MOTORCONTROLLER_NODE: motor controller is not active");
+    }
+}
+void Motorcontroller::get_MC_motorRPMLow(const can_msgs::Frame::ConstPtr& msg){
 
-// TODO: what to do when reading from the topic
-// Instead of polling, maybe use a timer and interrupt it. see ROS timers for details
-void Motorcontroller::topic_callback(const can_msgs::Frame::ConstPtr& msg) {
-    ROS_INFO_ONCE("Motorcontroller: message received");
+}
+void Motorcontroller::get_MC_motorRPMHigh(const can_msgs::Frame::ConstPtr& msg){
+
+}
+void Motorcontroller::get_MC_ISOTP(const can_msgs::Frame::ConstPtr& msg){
+    
 }

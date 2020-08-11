@@ -1,0 +1,9 @@
+<launch>
+
+  <param name="robot_description" command="$(find xacro)/xacro.py $(find redherring_gazebo)/urdf/red_herring.urdf.xacro"/>
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -x 0 -y 0 -z 0 -model redherring"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find redherring_gazebo)/worlds/gas_station.world"/>
+  </include>
+</launch>

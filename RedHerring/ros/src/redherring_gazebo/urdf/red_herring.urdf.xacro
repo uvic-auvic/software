@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+<robot name="red_herring" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!--General Properties-->
+  <xacro:property name="pi" value="3.14159"/>
+  <xacro:property name="main_body" value="red_herring"/>
+  <xacro:arg name="use_simple_mesh" default="true"/>
+  <xacro:arg name="color_format" default="R8G8B8"/>
+  <xacro:arg name="image_topic_name" default="image"/>
+  
+
+  <!--RedHerring Collision approximations-->
+  <xacro:property name="rh_x_len" value="0.40"/>
+  <xacro:property name="rh_y_len" value="0.46"/>
+  <xacro:property name="rh_z_len" value="0.30"/>
+  
+  <!--Top-Camera Collision approximations-->
+  <xacro:property name="top_cam_x_len" value="0.05"/>
+  <xacro:property name="top_cam_y_len" value="0.05"/>
+  <xacro:property name="top_cam_z_len" value="0.05"/>
+
+  <!--Top Camera sensor settings-->
+  <xacro:property name="top_camera_link_name" value="top_camera_link"/>  
+  <xacro:arg name="top_fps" default="20"/>
+  <xacro:arg name="top_fov_rad" default="1.396"/>
+  <xacro:arg name="top_height" default="600"/>
+  <xacro:arg name="top_width" default="800"/>
+  <xacro:arg name="top_clip_near" default="0.02"/>
+  <xacro:arg name="top_clip_far" default="300"/>
+  <xacro:arg name="top_camera_topic" default="camera/one"/>
+
+  <!--Bottom-Camera Collision approximations-->
+  <xacro:property name="bot_cam_x_len" value="0.05"/>
+  <xacro:property name="bot_cam_y_len" value="0.05"/>
+  <xacro:property name="bot_cam_z_len" value="0.05"/>
+
+  <!--Bottom Camera sensor settings-->
+  <xacro:property name="bot_camera_link_name" value="bot_camera_link"/>  
+  <xacro:arg name="bot_fps" default="20"/>
+  <xacro:arg name="bot_fov_rad" default="1.396"/>
+  <xacro:arg name="bot_height" default="600"/>
+  <xacro:arg name="bot_width" default="800"/>
+  <xacro:arg name="bot_clip_near" default="0.02"/>
+  <xacro:arg name="bot_clip_far" default="300"/>
+  <xacro:arg name="bot_camera_topic" default="camera/two"/>
+
+  <joint name="top_camera_joint" type="fixed">
+    <parent link="${main_body}"/>
+    <child link="${top_camera_link_name}"/>
+    <origin xyz="0 ${rh_y_len/2} ${rh_z_len/2}" rpy="0 0 ${pi/2}"/>
+  </joint> 
+
+  <joint name="bot_camera_joint" type="fixed">
+    <parent link="${main_body}"/>
+    <child link="${bot_camera_link_name}"/>
+    <origin xyz="0 ${rh_y_len/2} ${-bot_cam_z_len}" rpy="0 ${pi/2} ${pi/2}"/>
+  </joint> 
+  
+  <link name="${top_camera_link_name}">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${top_cam_x_len} ${top_cam_y_len} ${top_cam_z_len}"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${top_cam_x_len} ${top_cam_y_len} ${top_cam_z_len}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1e-3"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-4" ixy="0" ixz="0"
+                       iyy="1e-4" iyz="0"
+                               izz="1e-4"/>
+    </inertial>
+  </link>
+
+  <link name="${bot_camera_link_name}">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${bot_cam_x_len} ${bot_cam_y_len} ${bot_cam_z_len}"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${bot_cam_x_len} ${bot_cam_y_len} ${bot_cam_z_len}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1e-3"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-4" ixy="0" ixz="0"
+                       iyy="1e-4" iyz="0"
+                               izz="1e-4"/>
+    </inertial>
+  </link>
+
+  <link name="${main_body}">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <xacro:if value="$(arg use_simple_mesh)">
+          <box size="${rh_x_len} ${rh_y_len} ${rh_z_len}"/>
+        </xacro:if>
+        <xacro:unless value="$(arg use_simple_mesh)">
+          <mesh filename="$(find Gazebo_models)/models/red_herring/red_herring.dae"/>
+        </xacro:unless>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="${rh_x_len} ${rh_y_len} ${rh_z_len}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 ${rh_z_len/2}"/>
+      <mass value="10"/>
+      <inertia ixx="1" ixy="0" ixz="0"
+                       iyy="1" iyz="0"
+                               izz="1"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="${top_camera_link_name}">
+    <sensor type="camera" name="${top_camera_link_name}">
+      <update_rate>$(arg top_fps)</update_rate>
+      <camera name="top">
+        <horizontal_fov>$(arg top_fov_rad)</horizontal_fov>
+        <image>
+          <width>$(arg top_width)</width>
+          <height>$(arg top_height)</height>
+          <format>${(arg color_format)</format>
+        </image>
+        <clip>
+          <near>$(arg top_clip_near)</near>
+          <far>$(arg top_clip_far)</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin name="camera_top_controller" filename="libgazebo_ros_camera.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>0</updateRate>
+        <cameraName>$(arg top_camera_topic)</cameraName>
+        <imageTopicName>$(arg image_topic_name)</imageTopicName>
+        <cameraInfoTopicName>camera_top_info</cameraInfoTopicName>
+        <frameName>${top_camera_link_name}</frameName>
+        <hackBaseLine>0.07</hackBaseLine>
+        <distortionK1>0</distortionK1>
+        <distortionK2>0</distortionK2>
+        <distortionK3>0</distortionK3>
+        <distortianT1>0</distortianT1>
+        <distortionT2>0</distortionT2>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="${bot_camera_link_name}">
+    <sensor type="camera" name="${bot_camera_link_name}">
+      <update_rate>$(arg bot_fps)</update_rate>
+      <camera name="bottom">
+        <horizontal_fov>$(arg bot_fov_rad)</horizontal_fov>
+        <image>
+          <width>$(arg bot_width)</width>
+          <height>$(arg bot_height)</height>
+          <format>${(arg bot_color_format)</format>
+        </image>
+        <clip>
+          <near>$(arg bot_clip_near)</near>
+          <far>$(arg bot_clip_far)</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin name="camera_bottom_controller" filename="libgazebo_ros_camera.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>0</updateRate>
+        <cameraName>$(arg bot_camera_topic)</cameraName>
+        <imageTopicName>$(arg image_topic_name)</imageTopicName>
+        <cameraInfoTopicName>camera_top_info</cameraInfoTopicName>
+        <frameName>${bot_camera_link_name}</frameName>
+        <hackBaseLine>0.07</hackBaseLine>
+        <distortionK1>0</distortionK1>
+        <distortionK2>0</distortionK2>
+        <distortionK3>0</distortionK3>
+        <distortianT1>0</distortianT1>
+        <distortionT2>0</distortionT2>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+</robot>

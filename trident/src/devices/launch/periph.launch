@@ -1,3 +1,6 @@
+<!-- 
+    Launches all the peripheral devices
+-->
 <launch>
     <node name="powerboard_node" pkg="devices" type="powerboard_node" required="true">
     </node>
@@ -16,6 +19,6 @@
     <node name="imu_node" pkg="devices" type="imu_node" required="true">
     </node>
     <node name="dropper_node" pkg="devices" type="dropper_node" required="true">
-    </node>    
+    </node>
 </launch>
 
