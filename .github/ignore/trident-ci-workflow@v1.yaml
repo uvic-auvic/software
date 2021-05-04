@@ -31,7 +31,7 @@ jobs:
   job1:
     # job name
     name: init_enviroment
-    # latest=18.04 (20.04 is not available yet)
+    latest=18.04 (20.04 is not available yet)
     runs-on: ubuntu-latest
 
     # actions to execute in job1
