@@ -34,8 +34,8 @@ jobs:
   job1:
     # job name
     name: Install tools and build Trident
-    latest=18.04 (20.04 is not available yet)
-    runs-on: ubuntu-latest
+    # latest=18.04 (20.04 is not available yet)
+    runs-on: ubuntu-18.04
 
     # actions to execute in job1
     steps:
