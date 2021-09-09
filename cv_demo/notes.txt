@@ -1,0 +1,4 @@
+Code requires labels (yolov3.txt) weights (yolov3-tiny.weight) and config (yolov3-tiny.cfg) from
+pjreddie.com/darknet/yolo/
+Added to spin and web folders
+ 
