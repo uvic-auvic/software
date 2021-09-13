@@ -20,8 +20,10 @@ ratio = 3
 kernel_size = 3
 
 
-stream = cv2.VideoCapture()
-stream.open(0, cv2.CAP_DSHOW)
+stream = cv2.VideoCapture(0)
+
+if not stream.isOpened():
+    raise IOError("Cannot access webcam")
 
 cv2.namedWindow(GUI_TITLE, cv2.WINDOW_FREERATIO)
 cv2.setWindowProperty(GUI_TITLE, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
@@ -30,6 +32,10 @@ def compose_image_offset(l_img, s_img, x_offset, y_offset):
 	l_img[y_offset:y_offset+s_img.shape[0], x_offset:x_offset+s_img.shape[1]] = s_img
 
 model = YOLOv3()
+ret, frame = stream.read()
+print(frame[2])
+print(frame.shape)
+
 
 while True:
     ret, frame = stream.read()
