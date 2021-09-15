@@ -23,7 +23,13 @@ low_threshold = 55 # 0 - 100
 ratio = 3
 kernel_size = 3
 
-cv2.namedWindow(GUI_TITLE, cv2.WINDOW_FREERATIO)
+# Set these to screen size
+windowWidth = 1366
+windowHeight = 768
+
+# Setup window
+cv2.namedWindow(GUI_TITLE, cv2.WINDOW_NORMAL)
+cv2.resizeWindow(GUI_TITLE, windowWidth, windowHeight)
 cv2.setWindowProperty(GUI_TITLE, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
 def compose_image_offset(l_img, s_img, x_offset, y_offset):
@@ -33,11 +39,13 @@ model = YOLOv3()
 
 # Start spinnaker camera
 streamCamera = SpinCamera()
+streamCamera.configureAsTriggered()
 streamCamera.startCamera()
 
 while True:
     try:
         # Grab ndarray
+        streamCamera.triggerCamera()
         frame = streamCamera.grabImageArray()
 
         # Canny edge detect
@@ -54,7 +62,6 @@ while True:
         pip = cv2.resize(sub, None, fx=0.25, fy=0.25, interpolation=cv2.INTER_CUBIC)
         compose_image_offset(res, pip, X_OFF, Y_OFF)
 
-
         cv2.imshow(GUI_TITLE, res)
         if cv2.waitKey(1) & 0xFF == ord(GUI_QUIT):  break
     
@@ -62,6 +69,7 @@ while True:
         break
 
 # Stop and teardown camera
+streamCamera.resetTriggeredCamera()
 streamCamera.stopCamera()
 streamCamera.tearDown()
 cv2.destroyAllWindows()
